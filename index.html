@@ -107,6 +107,18 @@ margin-bottom:16px;
 text-align:center;
 }
 
+.cardLink{
+text-decoration:none;
+color:inherit;
+display:block;
+}
+
+.cardLink:hover .card{
+transform:translateY(-6px);
+transition:0.3s;
+cursor:pointer;
+}
+    
 .stat{
 position:absolute;
 top:70%;
@@ -140,6 +152,7 @@ z-index:5;
 <div class="stat" id="stat">357 people shared their views</div>
 
 <div class="cards">
+<a href="who-responded.html" class="cardLink">
 <div class="card">
 <h3>Who Responded?</h3>
 <p>Explore responses across Europe, demographics and sea-basin participation.</p>
@@ -150,6 +163,7 @@ z-index:5;
 <p>Discover what people value most about Europe's seas.</p>
 </div>
 
+<a href="what-should-mpas-do.html" class="cardLink">
 <div class="card">
 <h3>What Should MPAs Do?</h3>
 <p>Explore the interactive word cloud and sea-basin insights.</p>
