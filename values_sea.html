@@ -1,0 +1,162 @@
+
+<!doctype html><html><head><meta charset="utf-8">
+<script src="https://cdn.plot.ly/plotly-2.30.0.min.js"></script>
+<style>
+body{margin:0;background:#004470;color:white;font-family:Segoe UI}
+.header{padding:20px;text-align:center;font-size:52px;font-weight:900}
+.topnav{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;padding:0 20px 15px}
+.basin{padding:12px 18px;border:none;border-radius:30px;background:#0a2238;color:white;cursor:pointer}
+.active{color:#fff!important;font-weight:700!important;}
+.panel{background:rgba(255,255,255,.04);border-radius:24px;padding:18px;margin:20px}
+.toggle{display:flex;gap:10px;margin-bottom:15px}
+.toggle button{padding:10px 16px;border:none;border-radius:20px;background:#0a2238;color:white;cursor:pointer}
+.on{background:#4a8cff!important}
+#viz{height:900px}
+.insights{display:grid;grid-template-columns:repeat(4,1fr);gap:15px;margin-top:20px}
+.card{background:#0a2238;border-radius:12px;padding:15px}
+.info{cursor:help}
+
+@font-face{
+ font-family:'EarlyMan';
+ src:url('EarlyMan.ttf') format('truetype');
+}
+.header{
+ font-family:'EarlyMan', sans-serif !important;
+ letter-spacing:2px;
+}
+.back-btn{
+ position:absolute;left:20px;top:20px;
+ padding:14px 24px;border-radius:28px;
+ background:#2f5068;color:white;text-decoration:none;
+ border:1px solid rgba(255,255,255,.2);
+ font-weight:700;
+}
+.logo{
+ position:absolute;right:20px;top:12px;
+ height:80px;
+}
+.basin{
+ background:#3f5669 !important;
+ border:1px solid rgba(255,255,255,.18);
+ font-weight:700;
+}
+
+</style></head><body>
+
+<a class="back-btn" href="index.html">← Back</a>
+<img class="logo" src="MPADay_Logo_white_transp.png" alt="MPA Day">
+
+<div class="header">WHAT PEOPLE VALUE ABOUT THE SEA</div>
+<div class="topnav" id="nav"></div>
+<div class="panel">
+<div class="toggle">
+<button id="heatBtn" class="on" onclick="setView('heat')">Heatmap</button>
+<button id="barBtn" onclick="setView('bar')">Top Priorities</button>
+<button id="bottomBtn" onclick="setView('bottom')">Bottom Priorities</button>
+</div>
+<div id="viz"></div>
+<div class="insights">
+<div class="card"><h3 title="% of respondents placing a value in ranks 1-3">Top 3 Priorities ⓘ</h3><div id="top3"></div></div>
+<div class="card"><h3 title="% of respondents placing a value in ranks 8-10">Bottom 3 Priorities ⓘ</h3><div id="bottom3"></div></div>
+<div class="card"><h3>Respondents</h3><div id="resp"></div></div>
+<div class="card"><h3>Most Distinctive <span class="info" id="metricInfo" title="Largest positive and negative differences versus the European average">ⓘ</span></h3><div id="metricText"></div></div>
+</div></div>
+<script>
+const DATA={"Overall": {"n": 150, "heat": [[50.7, 15.3, 6.7, 7.3, 5.3, 5.3, 6.0, 1.3, 0.7, 1.3], [17.3, 12.0, 9.3, 12.0, 11.3, 20.0, 6.7, 0.7, 4.0, 6.7], [12.7, 18.0, 13.3, 11.3, 10.7, 14.7, 11.3, 2.0, 3.3, 2.7], [4.7, 10.7, 10.7, 12.7, 11.3, 10.7, 17.3, 5.3, 12.0, 4.7], [4.7, 11.3, 11.3, 7.3, 15.3, 10.7, 16.0, 3.3, 13.3, 6.7], [4.7, 7.3, 9.3, 9.3, 9.3, 10.0, 12.0, 8.7, 16.0, 13.3], [2.0, 12.7, 10.0, 16.7, 9.3, 8.0, 12.0, 10.0, 12.7, 6.7], [0.7, 5.3, 9.3, 11.3, 12.7, 8.7, 11.3, 10.7, 14.0, 16.0], [2.0, 6.0, 13.3, 6.7, 9.3, 5.3, 4.7, 17.3, 16.7, 18.7], [0.7, 1.3, 6.7, 5.3, 5.3, 6.7, 2.7, 40.7, 7.3, 23.3]], "top_ranked": [["Biodiversity (species and habitats)", 80.7], ["Recreation (swimming, boating etc.)", 45.3], ["Climate regulation (carbon storage)", 40.0], ["Coastal protection (storms, erosion)", 30.7], ["Source of food", 29.3], ["Scenery", 27.3], ["Local identity and cultural heritage", 24.0], ["Renewable energy (e.g. windpower)", 10.7], ["Culture, art, inspiration", 8.0], ["Recreational fishing", 4.0]], "bottom_ranked": [["Recreational fishing", 68.7], ["Renewable energy (e.g. windpower)", 58.0], ["Culture, art, inspiration", 38.0], ["Source of food", 29.3], ["Scenery", 27.3], ["Coastal protection (storms, erosion)", 23.3], ["Climate regulation (carbon storage)", 20.7], ["Local identity and cultural heritage", 18.7], ["Recreation (swimming, boating etc.)", 12.7], ["Biodiversity (species and habitats)", 3.3]]}, "Atlantic Ocean": {"n": 9, "heat": [[77.8, 11.1, 0.0, 0.0, 0.0, 11.1, 0.0, 0.0, 0.0, 0.0], [11.1, 0.0, 11.1, 0.0, 11.1, 55.6, 0.0, 0.0, 11.1, 0.0], [0.0, 22.2, 11.1, 33.3, 11.1, 11.1, 0.0, 0.0, 0.0, 11.1], [0.0, 11.1, 11.1, 33.3, 22.2, 0.0, 22.2, 0.0, 0.0, 0.0], [0.0, 22.2, 0.0, 0.0, 0.0, 11.1, 44.4, 0.0, 22.2, 0.0], [11.1, 0.0, 0.0, 0.0, 11.1, 0.0, 22.2, 33.3, 11.1, 11.1], [0.0, 22.2, 11.1, 0.0, 33.3, 11.1, 11.1, 0.0, 11.1, 0.0], [0.0, 11.1, 33.3, 22.2, 0.0, 0.0, 0.0, 0.0, 11.1, 22.2], [0.0, 0.0, 11.1, 11.1, 0.0, 0.0, 0.0, 22.2, 11.1, 44.4], [0.0, 0.0, 11.1, 0.0, 11.1, 0.0, 0.0, 44.4, 22.2, 11.1]], "top_ranked": [["Biodiversity (species and habitats)", 88.9], ["Climate regulation (carbon storage)", 77.8], ["Recreation (swimming, boating etc.)", 33.3], ["Coastal protection (storms, erosion)", 33.3], ["Source of food", 22.2], ["Scenery", 22.2], ["Culture, art, inspiration", 11.1], ["Renewable energy (e.g. windpower)", 11.1], ["Local identity and cultural heritage", 0.0], ["Recreational fishing", 0.0]], "bottom_ranked": [["Renewable energy (e.g. windpower)", 77.8], ["Recreational fishing", 66.7], ["Source of food", 55.6], ["Culture, art, inspiration", 44.4], ["Coastal protection (storms, erosion)", 33.3], ["Recreation (swimming, boating etc.)", 11.1], ["Scenery", 11.1], ["Biodiversity (species and habitats)", 0.0], ["Climate regulation (carbon storage)", 0.0], ["Local identity and cultural heritage", 0.0]]}, "Baltic Sea": {"n": 65, "heat": [[55.4, 18.5, 3.1, 4.6, 9.2, 4.6, 4.6, 0.0, 0.0, 0.0], [24.6, 15.4, 3.1, 9.2, 12.3, 15.4, 9.2, 0.0, 1.5, 9.2], [9.2, 23.1, 16.9, 12.3, 16.9, 7.7, 10.8, 0.0, 3.1, 0.0], [3.1, 7.7, 9.2, 6.2, 18.5, 13.8, 21.5, 7.7, 10.8, 1.5], [4.6, 12.3, 10.8, 7.7, 16.9, 13.8, 7.7, 3.1, 15.4, 7.7], [1.5, 7.7, 9.2, 12.3, 6.2, 12.3, 7.7, 1.5, 21.5, 20.0], [1.5, 9.2, 10.8, 20.0, 4.6, 9.2, 13.8, 9.2, 13.8, 7.7], [0.0, 1.5, 10.8, 12.3, 7.7, 6.2, 16.9, 13.8, 15.4, 15.4], [0.0, 4.6, 20.0, 7.7, 4.6, 6.2, 7.7, 16.9, 13.8, 18.5], [0.0, 0.0, 6.2, 7.7, 3.1, 10.8, 0.0, 47.7, 4.6, 20.0]], "top_ranked": [["Biodiversity (species and habitats)", 89.2], ["Recreation (swimming, boating etc.)", 56.9], ["Scenery", 38.5], ["Climate regulation (carbon storage)", 27.7], ["Coastal protection (storms, erosion)", 26.2], ["Local identity and cultural heritage", 24.6], ["Source of food", 23.1], ["Renewable energy (e.g. windpower)", 9.2], ["Culture, art, inspiration", 4.6], ["Recreational fishing", 0.0]], "bottom_ranked": [["Recreational fishing", 78.5], ["Renewable energy (e.g. windpower)", 53.8], ["Source of food", 36.9], ["Culture, art, inspiration", 33.8], ["Coastal protection (storms, erosion)", 27.7], ["Local identity and cultural heritage", 24.6], ["Climate regulation (carbon storage)", 23.1], ["Scenery", 15.4], ["Recreation (swimming, boating etc.)", 6.2], ["Biodiversity (species and habitats)", 0.0]]}, "Black Sea": {"n": 28, "heat": [[28.6, 17.9, 7.1, 21.4, 0.0, 3.6, 10.7, 0.0, 3.6, 7.1], [14.3, 3.6, 17.9, 25.0, 7.1, 17.9, 7.1, 0.0, 3.6, 3.6], [21.4, 10.7, 14.3, 7.1, 0.0, 28.6, 10.7, 3.6, 3.6, 0.0], [3.6, 10.7, 25.0, 14.3, 0.0, 7.1, 7.1, 0.0, 14.3, 17.9], [10.7, 7.1, 7.1, 3.6, 14.3, 17.9, 14.3, 7.1, 10.7, 7.1], [7.1, 3.6, 14.3, 0.0, 14.3, 3.6, 21.4, 14.3, 14.3, 7.1], [7.1, 17.9, 3.6, 7.1, 7.1, 3.6, 14.3, 17.9, 14.3, 7.1], [0.0, 10.7, 3.6, 10.7, 21.4, 7.1, 7.1, 14.3, 7.1, 17.9], [7.1, 17.9, 3.6, 7.1, 17.9, 3.6, 0.0, 3.6, 17.9, 21.4], [0.0, 0.0, 3.6, 3.6, 17.9, 7.1, 7.1, 39.3, 10.7, 10.7]], "top_ranked": [["Biodiversity (species and habitats)", 64.3], ["Coastal protection (storms, erosion)", 53.6], ["Climate regulation (carbon storage)", 50.0], ["Source of food", 39.3], ["Recreation (swimming, boating etc.)", 32.1], ["Local identity and cultural heritage", 28.6], ["Culture, art, inspiration", 10.7], ["Renewable energy (e.g. windpower)", 10.7], ["Scenery", 7.1], ["Recreational fishing", 3.6]], "bottom_ranked": [["Scenery", 57.1], ["Recreational fishing", 57.1], ["Renewable energy (e.g. windpower)", 50.0], ["Culture, art, inspiration", 35.7], ["Recreation (swimming, boating etc.)", 28.6], ["Coastal protection (storms, erosion)", 21.4], ["Climate regulation (carbon storage)", 17.9], ["Local identity and cultural heritage", 14.3], ["Source of food", 10.7], ["Biodiversity (species and habitats)", 7.1]]}, "East Mediterranean Sea": {"n": 25, "heat": [[48.0, 12.0, 12.0, 4.0, 4.0, 4.0, 12.0, 4.0, 0.0, 0.0], [8.0, 4.0, 12.0, 16.0, 16.0, 20.0, 4.0, 4.0, 12.0, 4.0], [16.0, 16.0, 8.0, 8.0, 8.0, 20.0, 12.0, 4.0, 8.0, 0.0], [8.0, 12.0, 4.0, 16.0, 8.0, 8.0, 16.0, 8.0, 16.0, 4.0], [4.0, 16.0, 24.0, 12.0, 12.0, 0.0, 24.0, 0.0, 4.0, 4.0], [8.0, 16.0, 12.0, 16.0, 4.0, 12.0, 12.0, 8.0, 8.0, 4.0], [0.0, 16.0, 8.0, 12.0, 16.0, 12.0, 12.0, 8.0, 12.0, 4.0], [4.0, 0.0, 4.0, 8.0, 12.0, 16.0, 8.0, 12.0, 16.0, 20.0], [4.0, 0.0, 8.0, 8.0, 20.0, 8.0, 0.0, 28.0, 16.0, 8.0], [0.0, 8.0, 8.0, 0.0, 0.0, 0.0, 0.0, 24.0, 8.0, 52.0]], "top_ranked": [["Biodiversity (species and habitats)", 72.0], ["Climate regulation (carbon storage)", 44.0], ["Recreation (swimming, boating etc.)", 32.0], ["Source of food", 32.0], ["Coastal protection (storms, erosion)", 28.0], ["Scenery", 28.0], ["Local identity and cultural heritage", 28.0], ["Culture, art, inspiration", 20.0], ["Recreational fishing", 12.0], ["Renewable energy (e.g. windpower)", 4.0]], "bottom_ranked": [["Renewable energy (e.g. windpower)", 80.0], ["Recreational fishing", 64.0], ["Culture, art, inspiration", 40.0], ["Scenery", 32.0], ["Climate regulation (carbon storage)", 24.0], ["Source of food", 20.0], ["Coastal protection (storms, erosion)", 16.0], ["Biodiversity (species and habitats)", 8.0], ["Recreation (swimming, boating etc.)", 8.0], ["Local identity and cultural heritage", 8.0]]}, "North Sea": {"n": 14, "heat": [[71.4, 0.0, 7.1, 0.0, 0.0, 14.3, 0.0, 7.1, 0.0, 0.0], [7.1, 28.6, 14.3, 0.0, 7.1, 28.6, 7.1, 0.0, 0.0, 7.1], [7.1, 14.3, 14.3, 7.1, 0.0, 7.1, 21.4, 7.1, 0.0, 21.4], [0.0, 21.4, 7.1, 28.6, 0.0, 14.3, 14.3, 7.1, 7.1, 0.0], [0.0, 0.0, 0.0, 14.3, 28.6, 7.1, 14.3, 7.1, 14.3, 14.3], [7.1, 7.1, 7.1, 7.1, 21.4, 7.1, 0.0, 7.1, 14.3, 21.4], [0.0, 7.1, 7.1, 35.7, 7.1, 0.0, 7.1, 7.1, 14.3, 14.3], [0.0, 14.3, 14.3, 7.1, 28.6, 7.1, 14.3, 0.0, 14.3, 0.0], [0.0, 7.1, 14.3, 0.0, 7.1, 7.1, 7.1, 14.3, 35.7, 7.1], [7.1, 0.0, 14.3, 0.0, 0.0, 7.1, 14.3, 42.9, 0.0, 14.3]], "top_ranked": [["Biodiversity (species and habitats)", 85.7], ["Climate regulation (carbon storage)", 50.0], ["Recreation (swimming, boating etc.)", 42.9], ["Source of food", 35.7], ["Local identity and cultural heritage", 28.6], ["Renewable energy (e.g. windpower)", 28.6], ["Recreational fishing", 14.3], ["Coastal protection (storms, erosion)", 7.1], ["Scenery", 7.1], ["Culture, art, inspiration", 0.0]], "bottom_ranked": [["Recreational fishing", 57.1], ["Culture, art, inspiration", 50.0], ["Source of food", 42.9], ["Scenery", 35.7], ["Local identity and cultural heritage", 35.7], ["Recreation (swimming, boating etc.)", 21.4], ["Climate regulation (carbon storage)", 21.4], ["Renewable energy (e.g. windpower)", 21.4], ["Biodiversity (species and habitats)", 7.1], ["Coastal protection (storms, erosion)", 7.1]]}, "West Mediterranean Sea": {"n": 9, "heat": [[33.3, 22.2, 22.2, 11.1, 11.1, 0.0, 0.0, 0.0, 0.0, 0.0], [22.2, 22.2, 11.1, 11.1, 11.1, 11.1, 0.0, 0.0, 0.0, 11.1], [22.2, 11.1, 0.0, 11.1, 22.2, 22.2, 11.1, 0.0, 0.0, 0.0], [22.2, 11.1, 0.0, 0.0, 11.1, 11.1, 22.2, 0.0, 22.2, 0.0], [0.0, 11.1, 22.2, 0.0, 11.1, 0.0, 33.3, 0.0, 22.2, 0.0], [0.0, 0.0, 0.0, 11.1, 11.1, 22.2, 22.2, 22.2, 11.1, 0.0], [0.0, 11.1, 33.3, 22.2, 11.1, 11.1, 0.0, 11.1, 0.0, 0.0], [0.0, 11.1, 0.0, 11.1, 11.1, 22.2, 0.0, 0.0, 22.2, 22.2], [0.0, 0.0, 11.1, 0.0, 0.0, 0.0, 11.1, 33.3, 11.1, 33.3], [0.0, 0.0, 0.0, 22.2, 0.0, 0.0, 0.0, 33.3, 11.1, 33.3]], "top_ranked": [["Biodiversity (species and habitats)", 77.8], ["Recreation (swimming, boating etc.)", 55.6], ["Scenery", 44.4], ["Source of food", 33.3], ["Coastal protection (storms, erosion)", 33.3], ["Climate regulation (carbon storage)", 33.3], ["Local identity and cultural heritage", 11.1], ["Renewable energy (e.g. windpower)", 11.1], ["Recreational fishing", 0.0], ["Culture, art, inspiration", 0.0]], "bottom_ranked": [["Renewable energy (e.g. windpower)", 88.9], ["Recreational fishing", 66.7], ["Culture, art, inspiration", 44.4], ["Coastal protection (storms, erosion)", 33.3], ["Climate regulation (carbon storage)", 22.2], ["Recreation (swimming, boating etc.)", 11.1], ["Source of food", 11.1], ["Scenery", 11.1], ["Local identity and cultural heritage", 11.1], ["Biodiversity (species and habitats)", 0.0]]}};
+const CATS=["Biodiversity (species and habitats)", "Recreation (swimming, boating etc.)", "Source of food", "Coastal protection (storms, erosion)", "Scenery", "Climate regulation (carbon storage)", "Local identity and cultural heritage", "Recreational fishing", "Culture, art, inspiration", "Renewable energy (e.g. windpower)"];
+const RANKS=["Rank 1", "Rank 2", "Rank 3", "Rank 4", "Rank 5", "Rank 6", "Rank 7", "Rank 8", "Rank 9", "Rank 10"];
+
+
+const basinStyles = {
+ 'Overall':'linear-gradient(135deg,#3aa7ff 0%,#0f7dff 100%)',
+ 'Atlantic Ocean':'linear-gradient(135deg,#8ee7ff 0%,#4fc3ff 100%)',
+ 'Baltic Sea':'linear-gradient(135deg,#00d4ff 0%,#0099ff 100%)',
+ 'Black Sea':'linear-gradient(135deg,#7be55a 0%,#36c24a 100%)',
+ 'East Mediterranean Sea':'linear-gradient(135deg,#e5ef5a 0%,#b9d72a 100%)',
+ 'North Sea':'linear-gradient(135deg,#20e0c6 0%,#00b7a8 100%)',
+ 'West Mediterranean Sea':'linear-gradient(135deg,#00d98a 0%,#00b86f 100%)'
+};
+
+const basinColours = {
+ 'Overall':'#1e9cff',
+ 'Atlantic Ocean':'#9fe1ff',
+ 'Baltic Sea':'#28c3ff',
+ 'Black Sea':'#67d957',
+ 'East Mediterranean Sea':'#d7ea4d',
+ 'North Sea':'#12d9c7',
+ 'West Mediterranean Sea':'#00c66f'
+};
+
+let basin='Overall',view='heat';
+nav.innerHTML=Object.keys(DATA).map((b,i)=>`<button class="basin ${i===0?'active':''}" onclick="pick('${b}',this)">${b}</button>`).join('');
+function pick(b,e){
+ basin=b;
+ document.querySelectorAll('.basin').forEach(x=>{
+   x.classList.remove('active');
+   x.style.background='';
+   x.style.borderColor='';
+   x.style.boxShadow='';
+   x.style.color='';
+   x.style.fontWeight='';
+ });
+ e.classList.add('active');
+ const c=basinColours[b]||'#1e9cff'; const bg=basinStyles[b]||c; e.style.background=bg;
+ e.style.borderColor=c;
+ e.style.boxShadow='0 0 30px '+c;
+ e.style.color='#ffffff';
+ e.style.fontWeight='700';
+ render();
+}
+function setView(v){view=v;heatBtn.classList.toggle('on',v==='heat');barBtn.classList.toggle('on',v==='bar');bottomBtn.classList.toggle('on',v==='bottom');render();}
+function render(){
+ let d=DATA[basin];
+ resp.innerHTML='<b>'+d.n+'</b>';
+ if(view==='bottom'){
+   metricText.innerHTML='Bottom-3 respondent percentage';
+   metricInfo.title='% of respondents placing a value in ranks 8-10';
+ } else {
+   metricText.innerHTML='Top-3 respondent percentage';
+   metricInfo.title='% of respondents placing a value in ranks 1-3';
+ }
+
+ top3.innerHTML=d.top_ranked.slice(0,3).map((x,i)=>`${i+1}. ${x[0]} (${x[1]}%)`).join('<br>');
+ bottom3.innerHTML=d.bottom_ranked.slice(0,3).map((x,i)=>`${i+1}. ${x[0]} (${x[1]}%)`).join('<br>');
+ if(basin==='Overall'){
+   metricText.innerHTML='Viewing the European-wide baseline used for comparison.';
+ } else {
+   const overallTop = DATA["Overall"].top_ranked.reduce((a,x)=>{a[x[0]]=x[1];return a;},{});
+   const overallBottom = DATA["Overall"].bottom_ranked.reduce((a,x)=>{a[x[0]]=x[1];return a;},{});
+
+   if(view==='bottom'){
+      let diffs=d.bottom_ranked.map(x=>({name:x[0],diff:Math.round((x[1]-overallBottom[x[0]])*10)/10}));
+      let pos=[...diffs].sort((a,b)=>b.diff-a.diff)[0];
+      let neg=[...diffs].sort((a,b)=>a.diff-b.diff)[0];
+      metricText.innerHTML=`<div style="color:#7BC67B;font-weight:bold">▲ ${pos.name}<br>+${pos.diff}% vs Europe</div><br>
+      <div style="color:#E57373;font-weight:bold">▼ ${neg.name}<br>${neg.diff}% vs Europe</div><br>
+      <div>Most distinctive Bottom-3 differences.</div>`;
+   } else {
+      let diffs=d.top_ranked.map(x=>({name:x[0],diff:Math.round((x[1]-overallTop[x[0]])*10)/10}));
+      let pos=[...diffs].sort((a,b)=>b.diff-a.diff)[0];
+      let neg=[...diffs].sort((a,b)=>a.diff-b.diff)[0];
+      metricText.innerHTML=`<div style="color:#7BC67B;font-weight:bold">▲ ${pos.name}<br>+${pos.diff}% vs Europe</div><br>
+      <div style="color:#E57373;font-weight:bold">▼ ${neg.name}<br>${neg.diff}% vs Europe</div><br>
+      <div>Most distinctive Top-3 differences.</div>`;
+   }
+ }
+
+ if(view==='heat'){
+ Plotly.newPlot('viz',[{type:'heatmap',z:d.heat,y:RANKS,x:CATS,hovertemplate:'%{x}<br>%{y}<br>%{z}% of respondents<extra></extra>',
+ colorscale:[[0,'#08243c'],[0.5,'#14aae2'],[1,'#c7d54f']]}],
+ {xaxis:{side:'top',tickangle:-35},yaxis:{autorange:'reversed'},paper_bgcolor:'rgba(0,0,0,0)',plot_bgcolor:'rgba(0,0,0,0)',font:{color:'white'},margin:{l:90,r:20,t:220,b:40}});
+ } else if(view==='bar') {
+ Plotly.newPlot('viz',[{type:'bar',orientation:'h',y:d.top_ranked.slice(0,10).map(x=>x[0]).reverse(),x:d.top_ranked.slice(0,10).map(x=>x[1]).reverse(),
+ marker:{color:'#14aae2'},hovertemplate:'%{x}% of respondents placed this value in ranks 1-3<extra></extra>'}],
+ {xaxis:{title:'% of respondents placing value in Top 3'},paper_bgcolor:'rgba(0,0,0,0)',plot_bgcolor:'rgba(0,0,0,0)',font:{color:'white'},margin:{l:320,r:20,t:30,b:100}});
+ } else {
+ Plotly.newPlot('viz',[{type:'bar',orientation:'h',y:d.bottom_ranked.slice(0,10).map(x=>x[0]).reverse(),x:d.bottom_ranked.slice(0,10).map(x=>x[1]).reverse(),
+ marker:{color:'#c7d54f'},hovertemplate:'%{x}% of respondents placed this value in ranks 8-10<extra></extra>'}],
+ {xaxis:{title:'% of respondents placing value in Bottom 3'},paper_bgcolor:'rgba(0,0,0,0)',plot_bgcolor:'rgba(0,0,0,0)',font:{color:'white'},margin:{l:320,r:20,t:30,b:100}});
+ }
+}
+render();
+</script></body></html>
