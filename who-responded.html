@@ -1,9 +1,10 @@
 
+
 <!DOCTYPE html><html><head><meta charset="utf-8">
 <title>Who Responded - Exhibit V8</title>
 <style>
 body{margin:0;background:#071723;color:white;font-family:Arial,sans-serif;overflow:visible}
-.header{text-align:center;padding:10px 0;background:linear-gradient(180deg,#0b3147,#071723)}.backBtn{
+.header{text-align:center;padding:10px 0;background:linear-gradient(180deg,#004470,#071723)}.backBtn{
 position:absolute;
 left:20px;
 top:20px;
@@ -165,8 +166,8 @@ z-index:50;
 <div class="sidebar"><div id="info" style="flex:1;overflow-y:auto;min-height:420px;padding-right:14px;box-sizing:border-box"></div></div>
 </div>
 <script>
-const mapping={"Sweden": "SE", "Greece": "GR", "Finland": "FI", "Germany": "DE", "Bulgaria": "BG", "Spain": "ES", "Ukraine": "UA", "Norway": "NO", "Estonia": "EE", "T\u00fcrkiye": "TR", "Portugal": "PT", "Lithuania": "LT", "Italy": "IT", "France": "FR", "Romania": "RO", "United Kingdom of Great Britain and Northern Ireland": "GB", "Montenegro": "ME", "Moldova": "MD", "Georgia": "GE", "Netherlands": "NL", "Czechia": "CZ", "Ireland": "IE", "Malta": "MT", "Denmark": "DK", "Albania": "AL"};
-const allCounts={"Sweden": 30, "Greece": 22, "Finland": 20, "Germany": 15, "Bulgaria": 13, "Spain": 7, "Türkiye": 6, "Romania": 5, "Estonia": 4, "Ukraine": 4, "Norway": 4, "Lithuania": 3, "Portugal": 3, "France": 3, "Italy": 3, "Moldova": 3, "United Kingdom of Great Britain and Northern Ireland": 2, "Montenegro": 2, "Georgia": 2, "Netherlands": 2, "Czechia": 1, "Ireland": 1, "Malta": 1, "Denmark": 1, "Albania": 1};
+const mapping={"Sweden": "SE", "Greece": "GR", "Finland": "FI", "Germany": "DE", "Bulgaria": "BG", "Spain": "ES", "Ukraine": "UA", "Norway": "NO", "Estonia": "EE", "T\u00fcrkiye": "TR", "Portugal": "PT", "Lithuania": "LT", "Italy": "IT", "France": "FR", "Romania": "RO", "United Kingdom of Great Britain and Northern Ireland": "GB", "Montenegro": "ME", "Moldova": "MD", "Georgia": "GE", "Netherlands": "NL", "Czechia": "CZ", "Ireland": "IE", "Malta": "MT", "Denmark": "DK", "Albania": "AL", "Belgium": "BE", "Croatia": "HR"};
+const allCounts = {"Sweden": 30, "Greece": 22, "Finland": 20, "Germany": 15, "Bulgaria": 13, "Spain": 7, "Türkiye": 6, "Romania": 5, "Lithuania": 4, "Norway": 4, "Estonia": 4, "France": 4, "Ukraine": 4, "Italy": 3, "Portugal": 3, "Moldova": 3, "Netherlands": 3, "United Kingdom of Great Britain and Northern Ireland": 2, "Belgium": 2, "Montenegro": 2, "Georgia": 2, "Czechia": 1, "Malta": 1, "Albania": 1, "Ireland": 1, "Denmark": 1, "Croatia": 1};
 
 const basinMapColours={
  'All Responses':'#0b8cff',
@@ -195,7 +196,7 @@ const countryFlagCodes={
 'Netherlands':'nl','Estonia':'ee','Lithuania':'lt','Romania':'ro',
 'Bulgaria':'bg','Ukraine':'ua','Norway':'no','Türkiye':'tr',
 'Malta':'mt','Albania':'al','Montenegro':'me','Moldova':'md',
-'Georgia':'ge','Czechia':'cz',
+'Georgia':'ge','Czechia':'cz','Belgium':'be','Croatia':'hr',
 'United Kingdom of Great Britain and Northern Ireland':'gb'
 };
 
@@ -205,17 +206,17 @@ const countryFlags={
 'Netherlands':'🇳🇱','Estonia':'🇪🇪','Lithuania':'🇱🇹','Romania':'🇷🇴',
 'Bulgaria':'🇧🇬','Ukraine':'🇺🇦','Norway':'🇳🇴','Türkiye':'🇹🇷',
 'Malta':'🇲🇹','Albania':'🇦🇱','Montenegro':'🇲🇪','Moldova':'🇲🇩',
-'Georgia':'🇬🇪','Czechia':'🇨🇿',
+'Georgia':'🇬🇪','Czechia':'🇨🇿','Belgium':'🇧🇪','Croatia':'🇭🇷',
 'United Kingdom of Great Britain and Northern Ireland':'🇬🇧'
 };
 window.currentBasinName='Europe Overview';
 window.currentBasinData=null;
 
 
-const basinAgeByCountry={"Atlantic Ocean": {"France": {"25-34": 3}, "Ireland": {"25-34": 1}, "Portugal": {"25-34": 2, "35-44": 1}, "Spain": {"35-44": 1, "25-34": 1}}, "Baltic Sea": {"Bulgaria": {"45-54": 1}, "Czechia": {"18-24": 1}, "Denmark": {"35-44": 1}, "Estonia": {"18-24": 2, "55-64": 1, "25-34": 1}, "Finland": {"35-44": 8, "45-54": 5, "25-34": 3, "Under 18": 2, "65-74": 1, "55-64": 1}, "Germany": {"35-44": 7, "25-34": 1, "55-64": 1, "18-24": 1}, "Lithuania": {"45-54": 1, "25-34": 1, "35-44": 1}, "Sweden": {"45-54": 8, "55-64": 7, "25-34": 6, "35-44": 6}}, "Black Sea": {"Bulgaria": {"55-64": 4, "45-54": 4, "65-74": 3, "35-44": 1}, "Georgia": {"55-64": 1, "35-44": 1}, "Greece": {"25-34": 1}, "Moldova": {"45-54": 2, "35-44": 1}, "Romania": {"55-64": 3, "35-44": 2}, "Türkiye": {"45-54": 4, "35-44": 2}, "Ukraine": {"35-44": 3, "45-54": 1}}, "East Mediterranean Sea": {"Albania": {"25-34": 1}, "Greece": {"45-54": 6, "55-64": 6, "25-34": 5, "35-44": 3, "18-24": 1}, "Italy": {"25-34": 2}, "Montenegro": {"25-34": 2}}, "North Sea": {"Germany": {"25-34": 1, "65-74": 1, "35-44": 1}, "Netherlands": {"18-24": 2}, "Norway": {"35-44": 1, "45-54": 1, "65-74": 1, "18-24": 1}, "Sweden": {"45-54": 2, "55-64": 1}, "United Kingdom of Great Britain and Northern Ireland": {"65-74": 1, "35-44": 1}}, "West Mediterranean Sea": {"Germany": {"65-74": 1, "18-24": 1}, "Italy": {"18-24": 1}, "Malta": {"25-34": 1}, "Spain": {"25-34": 4, "35-44": 1}}};
+const basinAgeByCountry = {"Atlantic Ocean": {"France": {"25-34": 4}, "Ireland": {"25-34": 1}, "Portugal": {"25-34": 2, "35-44": 1}, "Spain": {"35-44": 1, "25-34": 1}}, "Baltic Sea": {"Bulgaria": {"45-54": 1}, "Czechia": {"18-24": 1}, "Denmark": {"35-44": 1}, "Estonia": {"18-24": 2, "55-64": 1, "25-34": 1}, "Finland": {"35-44": 8, "45-54": 5, "25-34": 3, "Under 18": 2, "65-74": 1, "55-64": 1}, "Germany": {"35-44": 7, "25-34": 1, "55-64": 1, "18-24": 1}, "Lithuania": {"25-34": 2, "45-54": 1, "35-44": 1}, "Sweden": {"45-54": 8, "55-64": 7, "25-34": 6, "35-44": 6}}, "Black Sea": {"Bulgaria": {"55-64": 4, "45-54": 4, "65-74": 3, "35-44": 1}, "Georgia": {"55-64": 1, "35-44": 1}, "Greece": {"25-34": 1}, "Moldova": {"45-54": 2, "35-44": 1}, "Romania": {"55-64": 3, "35-44": 2}, "Türkiye": {"45-54": 4, "35-44": 2}, "Ukraine": {"35-44": 3, "45-54": 1}}, "East Mediterranean Sea": {"Albania": {"25-34": 1}, "Croatia": {"45-54": 1}, "Greece": {"45-54": 6, "55-64": 6, "25-34": 5, "35-44": 3, "18-24": 1}, "Italy": {"25-34": 2}, "Montenegro": {"25-34": 2}}, "North Sea": {"Belgium": {"25-34": 1, "35-44": 1}, "Germany": {"25-34": 1, "65-74": 1, "35-44": 1}, "Netherlands": {"18-24": 2, "25-34": 1}, "Norway": {"35-44": 1, "45-54": 1, "65-74": 1, "18-24": 1}, "Sweden": {"45-54": 2, "55-64": 1}, "United Kingdom of Great Britain and Northern Ireland": {"65-74": 1, "35-44": 1}}, "West Mediterranean Sea": {"Germany": {"65-74": 1, "18-24": 1}, "Italy": {"18-24": 1}, "Malta": {"25-34": 1}, "Spain": {"25-34": 4, "35-44": 1}}};
 
-const ageByCountry={"Albania": {"25-34": 1}, "Bulgaria": {"45-54": 5, "55-64": 4, "65-74": 3, "35-44": 1}, "Czechia": {"18-24": 1}, "Denmark": {"35-44": 1}, "Estonia": {"18-24": 2, "55-64": 1, "25-34": 1}, "Finland": {"35-44": 8, "45-54": 5, "25-34": 3, "Under 18": 2, "65-74": 1, "55-64": 1}, "France": {"25-34": 3}, "Georgia": {"55-64": 1, "35-44": 1}, "Germany": {"35-44": 8, "65-74": 2, "25-34": 2, "18-24": 2, "55-64": 1}, "Greece": {"25-34": 6, "45-54": 6, "55-64": 6, "35-44": 3, "18-24": 1}, "Ireland": {"25-34": 1}, "Italy": {"25-34": 2, "18-24": 1}, "Lithuania": {"45-54": 1, "25-34": 1, "35-44": 1}, "Malta": {"25-34": 1}, "Moldova": {"45-54": 2, "35-44": 1}, "Montenegro": {"25-34": 2}, "Netherlands": {"18-24": 2}, "Norway": {"35-44": 1, "45-54": 1, "65-74": 1, "18-24": 1}, "Portugal": {"25-34": 2, "35-44": 1}, "Romania": {"55-64": 3, "35-44": 2}, "Spain": {"25-34": 5, "35-44": 2}, "Sweden": {"45-54": 10, "55-64": 8, "25-34": 6, "35-44": 6}, "Türkiye": {"45-54": 4, "35-44": 2}, "Ukraine": {"35-44": 3, "45-54": 1}, "United Kingdom of Great Britain and Northern Ireland": {"65-74": 1, "35-44": 1}};
-const basinCountry={"Atlantic Ocean": {"Portugal": 3, "France": 3, "Spain": 2, "Ireland": 1}, "Baltic Sea": {"Sweden": 27, "Finland": 20, "Germany": 10, "Estonia": 4, "Lithuania": 3, "Czechia": 1, "Denmark": 1, "Bulgaria": 1}, "Black Sea": {"Bulgaria": 12, "Türkiye": 6, "Romania": 5, "Ukraine": 4, "Moldova": 3, "Georgia": 2, "Greece": 1}, "East Mediterranean Sea": {"Greece": 21, "Montenegro": 2, "Italy": 2, "Albania": 1}, "North Sea": {"Norway": 4, "Germany": 3, "Sweden": 3, "United Kingdom of Great Britain and Northern Ireland": 2, "Netherlands": 2}, "West Mediterranean Sea": {"Spain": 5, "Germany": 2, "Malta": 1, "Italy": 1}};
+const ageByCountry = {"Albania": {"25-34": 1}, "Belgium": {"25-34": 1, "35-44": 1}, "Bulgaria": {"45-54": 5, "55-64": 4, "65-74": 3, "35-44": 1}, "Croatia": {"45-54": 1}, "Czechia": {"18-24": 1}, "Denmark": {"35-44": 1}, "Estonia": {"18-24": 2, "55-64": 1, "25-34": 1}, "Finland": {"35-44": 8, "45-54": 5, "25-34": 3, "Under 18": 2, "65-74": 1, "55-64": 1}, "France": {"25-34": 4}, "Georgia": {"55-64": 1, "35-44": 1}, "Germany": {"35-44": 8, "65-74": 2, "25-34": 2, "18-24": 2, "55-64": 1}, "Greece": {"25-34": 6, "45-54": 6, "55-64": 6, "35-44": 3, "18-24": 1}, "Ireland": {"25-34": 1}, "Italy": {"25-34": 2, "18-24": 1}, "Lithuania": {"25-34": 2, "45-54": 1, "35-44": 1}, "Malta": {"25-34": 1}, "Moldova": {"45-54": 2, "35-44": 1}, "Montenegro": {"25-34": 2}, "Netherlands": {"18-24": 2, "25-34": 1}, "Norway": {"35-44": 1, "45-54": 1, "65-74": 1, "18-24": 1}, "Portugal": {"25-34": 2, "35-44": 1}, "Romania": {"55-64": 3, "35-44": 2}, "Spain": {"25-34": 5, "35-44": 2}, "Sweden": {"45-54": 10, "55-64": 8, "25-34": 6, "35-44": 6}, "Türkiye": {"45-54": 4, "35-44": 2}, "Ukraine": {"35-44": 3, "45-54": 1}, "United Kingdom of Great Britain and Northern Ireland": {"65-74": 1, "35-44": 1}};
+const basinCountry = {"Atlantic Ocean": {"France": 4, "Portugal": 3, "Spain": 2, "Ireland": 1}, "Baltic Sea": {"Sweden": 27, "Finland": 20, "Germany": 10, "Estonia": 4, "Lithuania": 4, "Czechia": 1, "Denmark": 1, "Bulgaria": 1}, "Black Sea": {"Bulgaria": 12, "Türkiye": 6, "Romania": 5, "Ukraine": 4, "Moldova": 3, "Georgia": 2, "Greece": 1}, "East Mediterranean Sea": {"Greece": 21, "Montenegro": 2, "Italy": 2, "Albania": 1, "Croatia": 1}, "North Sea": {"Norway": 4, "Sweden": 3, "Netherlands": 3, "Germany": 3, "United Kingdom of Great Britain and Northern Ireland": 2, "Belgium": 2}, "West Mediterranean Sea": {"Spain": 5, "Germany": 2, "Malta": 1, "Italy": 1}};
 
 
 
