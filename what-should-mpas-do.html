@@ -4,6 +4,7 @@
 <head>
 <meta name="google" content="notranslate">
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>What should MPAs do?</title>
 <style>
 html,body{
@@ -165,6 +166,84 @@ text-shadow:0 0 15px rgba(255,255,255,.25);
     0 2px 8px rgba(0,0,0,.25);
   cursor:pointer;
   z-index:100;
+}
+
+
+@media (max-width:768px){
+html,body{
+  overflow:auto;
+}
+
+#seaBasinTitle{
+  font-size:32px;
+  top:12px;
+}
+
+#panel{
+  width:min(92vw,620px);
+  top:52%;
+  left:50%;
+  transform:translate(-50%,-50%);
+}
+
+#title{font-size:30px;}
+#selected{font-size:24px;}
+
+#basinSelector{
+  position:static;
+  width:100%;
+  max-width:none;
+  margin:30px auto 20px auto;
+  text-align:center;
+  background:transparent;
+  white-space:nowrap;
+  overflow-x:auto;
+  overflow-y:hidden;
+}
+
+#basinSelector button{
+  display:inline-flex;
+  font-size:12px;
+  padding:6px 10px;
+  margin:2px;
+}
+
+canvas{
+  margin-top:0;
+  display:block;
+}
+body{padding-bottom:420px;}
+}
+
+
+@media (max-width:768px){
+  #basinSelector{
+    position:fixed !important;
+    left:0 !important;
+    right:0 !important;
+    bottom:0 !important;
+    width:100% !important;
+    margin:0 !important;
+    z-index:9999 !important;
+    background:rgba(8,59,92,.95) !important;
+    border-radius:0 !important;
+  }
+
+  #mobileBasinSelector{
+    display:flex !important;
+    justify-content:center;
+    gap:6px;
+    flex-wrap:nowrap;
+    overflow-x:auto;
+    padding:12px;
+    margin:30px auto 20px auto;
+    width:95vw;
+    box-sizing:border-box;
+  }
+
+  #mobileBasinSelector button{
+    white-space:nowrap;
+  }
 }
 
 </style>
@@ -402,7 +481,48 @@ quoteInterval = setInterval(showQuote, 4800);
 
 
 
+
 function redistributeWords(){
+
+if(window.innerWidth < 768){
+
+canvas.height = window.innerHeight;
+const panelTop = canvas.height * 0.12;
+const panelBottom = canvas.height * 0.55;
+
+const topWords = 0;
+const bottomWords = words.length - topWords;
+
+words.forEach((w,i)=>{
+
+if(i < topWords){
+
+const x = ((i+1)/(topWords+1))*canvas.width;
+
+w.x = x;
+w.y = 95;
+
+}else{
+
+const j = i - topWords;
+const rows = Math.ceil(bottomWords/2);
+const col = j % 2;
+const row = Math.floor(j/2);
+
+w.x = col===0 ? canvas.width*0.30 : canvas.width*0.70;
+w.y = panelBottom + 140 + row*60;
+}
+
+w.homeX = w.x;
+w.homeY = w.y;
+
+});
+
+canvas.height = Math.max(window.innerHeight,
+panelBottom + 520 + Math.ceil(bottomWords/2)*60);
+
+return;
+}
 
 words.forEach((w,i)=>{
 
@@ -413,12 +533,15 @@ const radiusY = canvas.height * 0.30;
 
 w.x = canvas.width/2 + Math.cos(angle) * radiusX;
 w.y = canvas.height/2 + Math.sin(angle) * radiusY;
+w.homeX = w.x;
+w.homeY = w.y;
 
 });
 
 }
 
 setTimeout(redistributeWords, 50);
+
 window.addEventListener("resize", redistributeWords);
 
 
@@ -456,18 +579,47 @@ setTimeout(redistributeAmbient,100);
 window.addEventListener("resize",redistributeAmbient);
 
 
+
+canvas.addEventListener("touchstart",e=>{
+const t=e.touches[0];
+if(!t) return;
+const rect=canvas.getBoundingClientRect();
+const tx=t.clientX-rect.left;
+const ty=t.clientY-rect.top;
+words.forEach(w=>{
+const width=Math.max(w.text.length*w.size*.75,120);
+const height=Math.max(w.size*2,40);
+if(
+tx>w.x-width/2 &&
+tx<w.x+width/2 &&
+ty>w.y-height/2 &&
+ty<w.y+height/2
+){
+words.forEach(a=>a.selected=false);
+w.selected=true;
+document.getElementById("selected").innerText=w.text;
+document.getElementById("count").innerText=w.count+" mentions";
+renderQuotes(w.text);
+e.preventDefault();
+}
+});
+},{passive:false});
+
 canvas.addEventListener("click",e=>{
+const rect=canvas.getBoundingClientRect();
+const cx=e.clientX-rect.left;
+const cy=e.clientY-rect.top;
 
 words.forEach(w=>{
 
-const width=w.text.length*w.size*.55;
-const height=w.size;
+const width=Math.max(w.text.length*w.size*.75,120);
+const height=Math.max(w.size*2,40);
 
 if(
-e.clientX>w.x-width/2 &&
-e.clientX<w.x+width/2 &&
-e.clientY>w.y-height/2 &&
-e.clientY<w.y+height/2
+cx>w.x-width/2 &&
+cx<w.x+width/2 &&
+cy>w.y-height/2 &&
+cy<w.y+height/2
 ){
 words.forEach(a=>a.selected=false);
 w.selected=true;
@@ -791,6 +943,7 @@ function buildWordCloud(ds){
     });
 
     window.quoteMap = ds.quoteMap;
+    if(window.innerWidth < 768){ setTimeout(()=>{ if(typeof redistributeWords==='function') redistributeWords(); },0); }
 
     const selected = document.getElementById('selected');
     const count = document.getElementById('count');
@@ -805,6 +958,9 @@ function switchDataset(name){
     if(!ds) return;
     currentQuoteMap = ds.quoteMap || {};
     buildWordCloud(ds);
+    if(window.innerWidth < 768 && typeof redistributeWords === 'function'){ words.forEach(w=>{if(w.baseX!==undefined){w.x=w.baseX; w.y=w.baseY;}});
+        setTimeout(redistributeWords,50);
+    }
     const q=document.getElementById('quotes'); if(q) q.innerHTML='';
 }
 
@@ -926,5 +1082,10 @@ window.addEventListener('load', function() {
    }
  }
 })();
-</script></body>
+</script>
+<script>
+// mobile selector clone removed
+</script>
+</body>
+
 </html>
