@@ -246,6 +246,13 @@ body{padding-bottom:420px;}
   }
 }
 
+
+@media (max-width:768px){
+  .word{
+    font-size: clamp(12px, 1.8vw, 18px) !important;
+  }
+}
+
 </style>
 </head>
 <body translate="no">
@@ -297,7 +304,17 @@ const counts=wordsData.map(x=>x[1]);
 const minCount=Math.min(...counts);
 const maxCount=Math.max(...counts);
 const scale=(w[1]-minCount)/Math.max(1,(maxCount-minCount));
-return 22 + scale*(56-22);
+
+if (window.innerWidth <= 768) {
+    let mobileSize = 10 + scale * (18 - 10);
+
+    if (w[0].toLowerCase() === "protect") mobileSize = Math.min(mobileSize, 14);
+    if (w[0].toLowerCase() === "biodiversity") mobileSize = Math.min(mobileSize, 13);
+
+    return mobileSize;
+}
+return 22 + scale * (56 - 22);
+
 })()
 ,
 selected:false,
@@ -505,12 +522,10 @@ w.y = 95;
 }else{
 
 const j = i - topWords;
-const rows = Math.ceil(bottomWords/2);
-const col = j % 2;
-const row = Math.floor(j/2);
+const row = j;
 
-w.x = col===0 ? canvas.width*0.30 : canvas.width*0.70;
-w.y = panelBottom + 140 + row*60;
+w.x = canvas.width * 0.50;
+w.y = panelBottom + 120 + row*48;
 }
 
 w.homeX = w.x;
@@ -519,7 +534,7 @@ w.homeY = w.y;
 });
 
 canvas.height = Math.max(window.innerHeight,
-panelBottom + 520 + Math.ceil(bottomWords/2)*60);
+panelBottom + 520 + bottomWords*48);
 
 return;
 }
@@ -935,7 +950,17 @@ function buildWordCloud(ds){
                 const min=Math.min(...counts);
                 const max=Math.max(...counts);
                 const scale=(w[1]-min)/Math.max(1,max-min);
-                return 22 + scale*(56-22);
+                
+if (window.innerWidth <= 768) {
+    let mobileSize = 10 + scale * (18 - 10);
+
+    if (w[0].toLowerCase() === "protect") mobileSize = Math.min(mobileSize, 14);
+    if (w[0].toLowerCase() === "biodiversity") mobileSize = Math.min(mobileSize, 13);
+
+    return mobileSize;
+}
+return 22 + scale * (56 - 22);
+
             })(),
             selected:false,
             phase:Math.random()*1000
