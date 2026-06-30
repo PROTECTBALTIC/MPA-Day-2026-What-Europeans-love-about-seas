@@ -3879,17 +3879,15 @@ window.addEventListener('load', ()=>{
 </script>
 
 
-<script id="mobile-med-title-shorten-v30">
+
+<script id="mobile-med-title-shorten-v32">
 (function(){
 
-  function shortenMobileMedTitles(){
-
-    if(window.innerWidth > 1024) return;
-
+  function shortenMedTitles(){
     var title = document.getElementById('seaBasinTitle');
     if(!title) return;
 
-    var txt = (title.textContent || '').trim();
+    var txt = (title.textContent || '').trim().toUpperCase();
 
     if(txt === 'EAST MEDITERRANEAN SEA'){
       title.textContent = 'EAST MEDITERRANEAN';
@@ -3900,20 +3898,36 @@ window.addEventListener('load', ()=>{
     }
   }
 
-  window.addEventListener('load', shortenMobileMedTitles);
-  window.addEventListener('resize', shortenMobileMedTitles);
+  function startWatching(){
+    var title = document.getElementById('seaBasinTitle');
+    if(!title) return;
 
-  var originalSetBasin = window.setBasin;
-  if(typeof originalSetBasin === 'function'){
-    window.setBasin = function(){
-      var result = originalSetBasin.apply(this, arguments);
-      setTimeout(shortenMobileMedTitles, 10);
-      return result;
-    };
+    shortenMedTitles();
+
+    var observer = new MutationObserver(shortenMedTitles);
+    observer.observe(title, {
+      childList:true,
+      characterData:true,
+      subtree:true
+    });
   }
 
-  setTimeout(shortenMobileMedTitles, 100);
-  setTimeout(shortenMobileMedTitles, 500);
+  if(document.readyState === 'loading'){
+    document.addEventListener('DOMContentLoaded', startWatching);
+  } else {
+    startWatching();
+  }
+
+  window.addEventListener('load', shortenMedTitles);
+  window.addEventListener('resize', shortenMedTitles);
+  window.addEventListener('orientationchange', function(){
+    setTimeout(shortenMedTitles, 50);
+    setTimeout(shortenMedTitles, 250);
+  });
+
+  setTimeout(shortenMedTitles, 50);
+  setTimeout(shortenMedTitles, 250);
+  setTimeout(shortenMedTitles, 750);
 
 })();
 </script>
