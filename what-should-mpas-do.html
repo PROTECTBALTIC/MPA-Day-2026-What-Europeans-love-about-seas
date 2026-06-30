@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en" translate="no">
 <head>
@@ -344,6 +345,48 @@ body{padding-bottom:420px;}
 .quote,
 .animatedQuote{
   font-family:"Berlin Sans FB","Trebuchet MS",Arial,sans-serif !important;
+}
+</style>
+
+
+<style id="mobile-header-spacing-fix">
+@media (max-width: 760px){
+  body{ padding-top:0 !important; }
+  .back-btn{
+    top:12px !important; left:12px !important; padding:8px 13px !important;
+    font-size:15px !important; z-index:300 !important;
+  }
+  #mpaLogo{
+    top:12px !important; right:12px !important; width:52px !important; z-index:300 !important;
+  }
+  #seaBasinTitle{
+    position:relative !important; top:auto !important; left:auto !important; transform:none !important;
+    width:calc(100vw - 150px) !important; margin:18px auto 14px auto !important;
+    padding:0 4px !important; box-sizing:border-box !important;
+    font-size:clamp(28px, 9vw, 42px) !important; line-height:.95 !important;
+    letter-spacing:1px !important; text-align:center !important; z-index:120 !important;
+  }
+  #panel{
+    position:relative !important; top:auto !important; left:auto !important; right:auto !important;
+    transform:none !important; width:calc(100vw - 28px) !important; max-width:620px !important;
+    min-width:0 !important; margin:8px auto 18px auto !important; padding:14px 14px 16px 14px !important;
+    box-sizing:border-box !important; max-height:none !important; overflow:visible !important; z-index:110 !important;
+  }
+  #title{
+    font-size:clamp(24px, 7vw, 34px) !important; line-height:1.08 !important;
+    margin:0 0 10px 0 !important; padding:0 46px !important; box-sizing:border-box !important;
+  }
+  #count{ font-size:16px !important; margin-bottom:10px !important; }
+  #quotes{ min-height:0 !important; margin-top:8px !important; }
+  .quote{ font-size:15px !important; line-height:1.45 !important; margin-top:8px !important; }
+  #htmlWordCloud,#wordCloud,#wordContainer,.word-cloud,.words{ margin-top:12px !important; }
+}
+@media (max-width: 420px){
+  #seaBasinTitle{ width:calc(100vw - 128px) !important; font-size:clamp(24px, 8vw, 34px) !important; margin-top:16px !important; }
+  #mpaLogo{ width:46px !important; }
+  .back-btn{ font-size:14px !important; padding:7px 11px !important; }
+  #title{ padding:0 28px !important; font-size:clamp(22px, 7vw, 30px) !important; }
+  #panel{ width:calc(100vw - 20px) !important; padding:12px !important; }
 }
 </style>
 
