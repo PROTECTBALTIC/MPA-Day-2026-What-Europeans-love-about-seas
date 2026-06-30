@@ -463,6 +463,48 @@ body{padding-bottom:420px;}
 }
 </style>
 
+
+<style id="mobile-med-title-hard-fix">
+@media (max-width: 760px){
+  #seaBasinTitle.mobile-med-title{
+    top: 54px !important;
+    padding: 0 92px !important;
+    font-size: clamp(20px, 5.2vw, 28px) !important;
+    line-height: 0.92 !important;
+    letter-spacing: 0.3px !important;
+    white-space: normal !important;
+  }
+
+  body.mobile-med-active #panel{
+    margin-top: 214px !important;
+  }
+}
+
+@media (max-width: 420px){
+  #seaBasinTitle.mobile-med-title{
+    top: 55px !important;
+    padding: 0 66px !important;
+    font-size: clamp(17px, 5vw, 23px) !important;
+    line-height: 0.94 !important;
+  }
+
+  body.mobile-med-active #panel{
+    margin-top: 222px !important;
+  }
+}
+
+@media (max-width: 360px){
+  #seaBasinTitle.mobile-med-title{
+    padding: 0 58px !important;
+    font-size: clamp(16px, 4.8vw, 21px) !important;
+  }
+
+  body.mobile-med-active #panel{
+    margin-top: 230px !important;
+  }
+}
+</style>
+
 </head>
 <body translate="no"><div id="selectedWordDock" style="display:none;"></div>
 
@@ -2937,6 +2979,56 @@ window.addEventListener('load', ()=>{
   setTimeout(renderHtmlWords,200);
 })();
 </script>
+
+<script id="mobile-med-title-hard-fix-script">
+(function(){
+  function fixMedTitle(){
+    var el = document.getElementById("seaBasinTitle");
+    if(!el) return;
+
+    var raw = (el.textContent || "").replace(/\s+/g, " ").trim().toUpperCase();
+    var isEast = raw === "EAST MEDITERRANEAN SEA";
+    var isWest = raw === "WEST MEDITERRANEAN SEA";
+
+    el.classList.toggle("mobile-med-title", isEast || isWest);
+    document.body.classList.toggle("mobile-med-active", isEast || isWest);
+
+    if(window.innerWidth <= 760 && isEast){
+      el.innerHTML = "EAST<br>MEDITERRANEAN<br>SEA";
+    } else if(window.innerWidth <= 760 && isWest){
+      el.innerHTML = "WEST<br>MEDITERRANEAN<br>SEA";
+    } else if(isEast){
+      el.textContent = "EAST MEDITERRANEAN SEA";
+    } else if(isWest){
+      el.textContent = "WEST MEDITERRANEAN SEA";
+    }
+  }
+
+  window.addEventListener("load", fixMedTitle);
+  window.addEventListener("resize", fixMedTitle);
+  document.addEventListener("click", function(){
+    setTimeout(fixMedTitle, 0);
+    setTimeout(fixMedTitle, 50);
+  });
+
+  var start = function(){
+    var el = document.getElementById("seaBasinTitle");
+    if(!el) return;
+    var obs = new MutationObserver(function(){
+      setTimeout(fixMedTitle, 0);
+    });
+    obs.observe(el, {childList:true, characterData:true, subtree:true});
+    fixMedTitle();
+  };
+
+  if(document.readyState === "loading"){
+    document.addEventListener("DOMContentLoaded", start);
+  } else {
+    start();
+  }
+})();
+</script>
+
 </body>
 
 </html>
