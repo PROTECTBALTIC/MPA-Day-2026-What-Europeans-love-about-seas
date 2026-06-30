@@ -3865,6 +3865,46 @@ window.addEventListener('load', ()=>{
 })();
 </script>
 
+
+<script id="mobile-med-title-shorten-v30">
+(function(){
+
+  function shortenMobileMedTitles(){
+
+    if(window.innerWidth > 1024) return;
+
+    var title = document.getElementById('seaBasinTitle');
+    if(!title) return;
+
+    var txt = (title.textContent || '').trim();
+
+    if(txt === 'EAST MEDITERRANEAN SEA'){
+      title.textContent = 'EAST MEDITERRANEAN';
+    }
+
+    if(txt === 'WEST MEDITERRANEAN SEA'){
+      title.textContent = 'WEST MEDITERRANEAN';
+    }
+  }
+
+  window.addEventListener('load', shortenMobileMedTitles);
+  window.addEventListener('resize', shortenMobileMedTitles);
+
+  var originalSetBasin = window.setBasin;
+  if(typeof originalSetBasin === 'function'){
+    window.setBasin = function(){
+      var result = originalSetBasin.apply(this, arguments);
+      setTimeout(shortenMobileMedTitles, 10);
+      return result;
+    };
+  }
+
+  setTimeout(shortenMobileMedTitles, 100);
+  setTimeout(shortenMobileMedTitles, 500);
+
+})();
+</script>
+
 </body>
 
 </html>
