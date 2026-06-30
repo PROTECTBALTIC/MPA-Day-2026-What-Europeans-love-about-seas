@@ -820,18 +820,438 @@ body{padding-bottom:420px;}
 </style>
 
 
-<style id="med-title-size-only-fix">
-@media (max-width:760px) and (orientation:portrait){
+<style id="mobile-title-values-page-layout">
+@media (max-width:1024px) and (orientation:portrait){
+
+  body{
+    text-align:center !important;
+  }
+
+  .back-btn{
+    position:static !important;
+    display:inline-block !important;
+    margin:12px auto 8px auto !important;
+    top:auto !important;
+    left:auto !important;
+    transform:none !important;
+    z-index:600 !important;
+  }
+
+  #mpaLogo{
+    position:static !important;
+    display:block !important;
+    margin:8px auto 10px auto !important;
+    width:auto !important;
+    height:56px !important;
+    max-height:56px !important;
+    opacity:.92 !important;
+    z-index:600 !important;
+  }
+
+  #seaBasinTitle,
   #seaBasinTitle.mobile-med-title{
-    font-size:16px !important;
+    position:static !important;
+    display:block !important;
+    top:auto !important;
+    left:auto !important;
+    right:auto !important;
+    transform:none !important;
+    width:auto !important;
+    max-width:none !important;
+    margin:8px auto 12px auto !important;
+    padding:0 12px !important;
+    box-sizing:border-box !important;
+    text-align:center !important;
+    font-family:'EarlyMan','Early Man','Impact','Arial Black',sans-serif !important;
+    font-size:clamp(24px,7vw,34px) !important;
     line-height:1.1 !important;
+    letter-spacing:1px !important;
+    white-space:normal !important;
+    word-break:normal !important;
+    overflow-wrap:normal !important;
+    hyphens:none !important;
+    z-index:500 !important;
+  }
+
+  #seaBasinTitle.mobile-med-title{
+    font-size:clamp(20px,5.8vw,28px) !important;
+    line-height:1.12 !important;
+  }
+
+  #panel{
+    position:relative !important;
+    top:auto !important;
+    left:auto !important;
+    right:auto !important;
+    transform:none !important;
+    width:calc(100vw - 28px) !important;
+    max-width:620px !important;
+    min-width:0 !important;
+    margin:8px auto 18px auto !important;
+    box-sizing:border-box !important;
+  }
+
+  body.mobile-med-active #panel{
+    margin-top:8px !important;
   }
 }
 
-@media (max-width:430px) and (orientation:portrait){
+@media (max-width:700px) and (orientation:portrait){
+  #seaBasinTitle,
   #seaBasinTitle.mobile-med-title{
-    font-size:15px !important;
-    line-height:1.1 !important;
+    font-size:24px !important;
+  }
+
+  #seaBasinTitle.mobile-med-title{
+    font-size:20px !important;
+  }
+}
+
+@media (max-width:420px) and (orientation:portrait){
+  #seaBasinTitle,
+  #seaBasinTitle.mobile-med-title{
+    font-size:22px !important;
+    padding:0 10px !important;
+  }
+
+  #seaBasinTitle.mobile-med-title{
+    font-size:18px !important;
+  }
+}
+</style>
+
+
+<style id="mobile-title-panel-spacing-logo-fix">
+@media (max-width:1024px) and (orientation:portrait){
+
+  #mpaLogo{
+    display:block !important;
+    visibility:visible !important;
+    opacity:.92 !important;
+    position:static !important;
+    margin:8px auto 12px auto !important;
+    height:56px !important;
+    width:auto !important;
+    max-width:90px !important;
+    max-height:56px !important;
+    object-fit:contain !important;
+  }
+
+  #seaBasinTitle,
+  #seaBasinTitle.mobile-med-title{
+    margin:10px auto 34px auto !important;
+  }
+
+  #panel{
+    margin-top:34px !important;
+  }
+
+  body.mobile-med-active #panel{
+    margin-top:40px !important;
+  }
+
+  #c{
+    margin-top:26px !important;
+  }
+}
+
+@media (max-width:700px) and (orientation:portrait){
+  #seaBasinTitle,
+  #seaBasinTitle.mobile-med-title{
+    margin-bottom:38px !important;
+  }
+
+  #panel{
+    margin-top:38px !important;
+  }
+
+  body.mobile-med-active #panel{
+    margin-top:44px !important;
+  }
+
+  #c{
+    margin-top:30px !important;
+  }
+}
+
+@media (max-width:420px) and (orientation:portrait){
+  #mpaLogo{
+    height:52px !important;
+    max-height:52px !important;
+  }
+
+  #seaBasinTitle,
+  #seaBasinTitle.mobile-med-title{
+    margin-bottom:42px !important;
+  }
+
+  #panel{
+    margin-top:42px !important;
+  }
+
+  body.mobile-med-active #panel{
+    margin-top:48px !important;
+  }
+
+  #c{
+    margin-top:34px !important;
+  }
+}
+</style>
+
+
+<style id="mobile-logo-top-fix">
+@media (max-width:1024px) and (orientation:portrait){
+
+  #mpaLogo{
+    position:relative !important;
+    display:block !important;
+    margin:10px auto 8px auto !important;
+    order:1 !important;
+    z-index:1000 !important;
+  }
+
+  .back-btn{
+    position:static !important;
+    display:inline-block !important;
+    margin:6px auto 12px auto !important;
+    z-index:900 !important;
+  }
+
+  #seaBasinTitle,
+  #seaBasinTitle.mobile-med-title{
+    margin-top:8px !important;
+  }
+}
+</style>
+
+
+<style id="mobile-logo-dom-order-final">
+@media (max-width:1024px) and (orientation:portrait){
+
+  #mpaLogo{
+    position:static !important;
+    display:block !important;
+    visibility:visible !important;
+    opacity:.92 !important;
+    margin:10px auto 6px auto !important;
+    width:auto !important;
+    height:56px !important;
+    max-width:96px !important;
+    max-height:56px !important;
+    object-fit:contain !important;
+    z-index:1000 !important;
+  }
+
+  .back-btn{
+    position:static !important;
+    display:inline-block !important;
+    margin:6px auto 12px auto !important;
+    z-index:900 !important;
+  }
+
+  #seaBasinTitle,
+  #seaBasinTitle.mobile-med-title{
+    position:static !important;
+    display:block !important;
+    margin:10px auto 34px auto !important;
+    font-family:'EarlyMan','Early Man','Impact','Arial Black',sans-serif !important;
+  }
+
+  #panel{
+    margin-top:34px !important;
+  }
+
+  body.mobile-med-active #panel{
+    margin-top:40px !important;
+  }
+}
+</style>
+
+
+<style id="mobile-panel-lower-v23">
+@media (max-width:1024px) and (orientation:portrait){
+
+  #seaBasinTitle,
+  #seaBasinTitle.mobile-med-title{
+    margin-bottom:52px !important;
+  }
+
+  #panel{
+    margin-top:60px !important;
+  }
+
+  body.mobile-med-active #panel{
+    margin-top:70px !important;
+  }
+}
+
+@media (max-width:700px) and (orientation:portrait){
+
+  #seaBasinTitle,
+  #seaBasinTitle.mobile-med-title{
+    margin-bottom:58px !important;
+  }
+
+  #panel{
+    margin-top:72px !important;
+  }
+
+  body.mobile-med-active #panel{
+    margin-top:82px !important;
+  }
+}
+
+@media (max-width:420px) and (orientation:portrait){
+
+  #seaBasinTitle,
+  #seaBasinTitle.mobile-med-title{
+    margin-bottom:64px !important;
+  }
+
+  #panel{
+    margin-top:86px !important;
+  }
+
+  body.mobile-med-active #panel{
+    margin-top:96px !important;
+  }
+}
+</style>
+
+
+<style id="mobile-panel-much-lower-v24">
+@media (max-width:1024px) and (orientation:portrait){
+
+  #seaBasinTitle,
+  #seaBasinTitle.mobile-med-title{
+    margin-bottom:80px !important;
+  }
+
+  #panel{
+    margin-top:110px !important;
+  }
+
+  body.mobile-med-active #panel{
+    margin-top:120px !important;
+  }
+}
+
+@media (max-width:700px) and (orientation:portrait){
+
+  #seaBasinTitle,
+  #seaBasinTitle.mobile-med-title{
+    margin-bottom:90px !important;
+  }
+
+  #panel{
+    margin-top:125px !important;
+  }
+
+  body.mobile-med-active #panel{
+    margin-top:135px !important;
+  }
+}
+
+@media (max-width:420px) and (orientation:portrait){
+
+  #seaBasinTitle,
+  #seaBasinTitle.mobile-med-title{
+    margin-bottom:100px !important;
+  }
+
+  #panel{
+    margin-top:145px !important;
+  }
+
+  body.mobile-med-active #panel{
+    margin-top:155px !important;
+  }
+}
+</style>
+
+
+<style id="mobile-scroll-height-tighten-v25">
+@media (max-width:1024px) and (orientation:portrait){
+
+  body{
+    padding-bottom:240px !important;
+  }
+
+  #basinSelector{
+    padding-bottom:calc(10px + env(safe-area-inset-bottom)) !important;
+  }
+
+  #c{
+    margin-bottom:0 !important;
+  }
+}
+
+@media (max-width:700px) and (orientation:portrait){
+  body{
+    padding-bottom:210px !important;
+  }
+}
+
+@media (max-width:420px) and (orientation:portrait){
+  body{
+    padding-bottom:180px !important;
+  }
+}
+</style>
+
+
+<style id="mobile-seagrass-is-bottom-v26">
+@media (max-width:1024px) and (orientation:portrait){
+
+  /* Remove the artificial extra scroll space */
+  body{
+    padding-bottom:90px !important;
+    min-height:auto !important;
+  }
+
+  /* Keep selector visible but don't reserve a huge blank area */
+  #basinSelector{
+    margin:0 !important;
+    padding-bottom:calc(8px + env(safe-area-inset-bottom)) !important;
+  }
+}
+
+@media (max-width:700px) and (orientation:portrait){
+  body{
+    padding-bottom:70px !important;
+  }
+}
+
+@media (max-width:420px) and (orientation:portrait){
+  body{
+    padding-bottom:60px !important;
+  }
+}
+</style>
+
+
+<style id="mobile-remove-extra-scroll-v28">
+@media (max-width:1024px) and (orientation:portrait){
+
+  body{
+    padding-bottom:0 !important;
+    margin-bottom:0 !important;
+    overflow-x:hidden !important;
+  }
+
+  html{
+    margin-bottom:0 !important;
+    padding-bottom:0 !important;
+  }
+
+  canvas#c{
+    margin-bottom:0 !important;
+    padding-bottom:0 !important;
+  }
+
+  #basinSelector{
+    margin-bottom:0 !important;
   }
 }
 </style>
@@ -839,11 +1259,12 @@ body{padding-bottom:420px;}
 </head>
 <body translate="no"><div id="selectedWordDock" style="display:none;"></div>
 
+<img id="mpaLogo" src="MPADay_Logo_white_transp.png" alt="MPA Day logo">
 <a class="back-btn" href="index.html">← Back</a>
 
 <div id="seaBasinTitle" style="color:#ffffff;">ALL RESPONSES</div>
 <canvas id="c"></canvas>
-<img id="mpaLogo" src="MPADay_Logo_white_transp.png" alt="MPA Day logo">
+
 
 
 <div id="panel">
@@ -853,7 +1274,7 @@ body{padding-bottom:420px;}
 <div id="quotes" style="display:block;min-height:120px;"></div>
 </div>
 
-<canvas id="c"></canvas>
+
 
 <script>
 
