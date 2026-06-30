@@ -1,7 +1,3 @@
-
-
-
-
 <!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
 <script src="https://cdn.plot.ly/plotly-2.30.0.min.js"></script>
 <style>
@@ -83,8 +79,6 @@ body{margin:0;background:#004470;color:white;font-family:Segoe UI}
 <div class="panel">
 <div class="toggle">
 <button id="heatBtn" class="on" onclick="setView('heat')">Heatmap</button>
-<button id="barBtn" onclick="setView('bar')">Top Priorities</button>
-<button id="bottomBtn" onclick="setView('bottom')">Bottom Priorities</button>
 <button id="rankBtn" onclick="setView('rank')">Sea Basin Rankings</button>
 <button id="ageRankBtn" onclick="setView('agerank')">Age Rankings</button>
 </div>
@@ -147,7 +141,7 @@ function pick(b,e){
  e.style.fontWeight='700';
  render();
 }
-function setView(v){view=v;heatBtn.classList.toggle('on',v==='heat');barBtn.classList.toggle('on',v==='bar');bottomBtn.classList.toggle('on',v==='bottom');rankBtn.classList.toggle('on',v==='rank');const a=document.getElementById('ageRankBtn'); if(a)a.classList.toggle('on',v==='agerank');render();}
+function setView(v){view=v;heatBtn.classList.toggle('on',v==='heat');rankBtn.classList.toggle('on',v==='rank');const a=document.getElementById('ageRankBtn'); if(a)a.classList.toggle('on',v==='agerank');render();}
 function render(){
  const insightsPanel=document.querySelector('.insights');
  const viz=document.getElementById('viz');
@@ -163,13 +157,9 @@ function render(){
 
  let d=DATA[basin];
  resp.innerHTML='<b>'+d.n+'</b>';
- if(view==='bottom'){
-   metricText.innerHTML='Bottom-3 respondent percentage';
-   metricInfo.title='% of respondents placing a value in ranks 8-10';
- } else {
-   metricText.innerHTML='Top-3 respondent percentage';
-   metricInfo.title='% of respondents placing a value in ranks 1-3';
- }
+
+ metricText.innerHTML='Top-3 respondent percentage';
+ metricInfo.title='% of respondents placing a value in ranks 1-3';
 
  top3.innerHTML=d.top_ranked.slice(0,3).map((x,i)=>`${i+1}. ${x[0]} (${x[1]}%)`).join('<br>');
  bottom3.innerHTML=d.bottom_ranked.slice(0,3).map((x,i)=>`${i+1}. ${x[0]} (${x[1]}%)`).join('<br>');
@@ -179,37 +169,18 @@ function render(){
  } else {
    const allresponsesTop = DATA["All responses"].top_ranked.reduce((a,x)=>{a[x[0]]=x[1];return a;},{});
    const allresponsesBottom = DATA["All responses"].bottom_ranked.reduce((a,x)=>{a[x[0]]=x[1];return a;},{});
-
-   if(view==='bottom'){
-      let diffs=d.bottom_ranked.map(x=>({name:x[0],diff:Math.round((x[1]-allresponsesBottom[x[0]])*10)/10}));
-      let pos=[...diffs].sort((a,b)=>b.diff-a.diff)[0];
-      let neg=[...diffs].sort((a,b)=>a.diff-b.diff)[0];
-      metricText.innerHTML=`<div style="color:#7BC67B;font-weight:bold">▲ ${pos.name}<br>+${pos.diff}% vs Europe</div><br>
-      <div style="color:#E57373;font-weight:bold">▼ ${neg.name}<br>${neg.diff}% vs Europe</div><br>
-      <div>Most distinctive Bottom-3 differences.</div>`;
-   } else {
-      let diffs=d.top_ranked.map(x=>({name:x[0],diff:Math.round((x[1]-allresponsesTop[x[0]])*10)/10}));
-      let pos=[...diffs].sort((a,b)=>b.diff-a.diff)[0];
-      let neg=[...diffs].sort((a,b)=>a.diff-b.diff)[0];
-      metricText.innerHTML=`<div style="color:#7BC67B;font-weight:bold">▲ ${pos.name}<br>+${pos.diff}% vs Europe</div><br>
-      <div style="color:#E57373;font-weight:bold">▼ ${neg.name}<br>${neg.diff}% vs Europe</div><br>
-      <div>Most distinctive Top-3 differences.</div>`;
-   }
+   let diffs=d.top_ranked.map(x=>({name:x[0],diff:Math.round((x[1]-allresponsesTop[x[0]])*10)/10}));
+   let pos=[...diffs].sort((a,b)=>b.diff-a.diff)[0];
+   let neg=[...diffs].sort((a,b)=>a.diff-b.diff)[0];
+   metricText.innerHTML=`<div style="color:#7BC67B;font-weight:bold">▲ ${pos.name}<br>+${pos.diff}% vs Europe</div><br>
+   <div style="color:#E57373;font-weight:bold">▼ ${neg.name}<br>${neg.diff}% vs Europe</div><br>
+   <div>Most distinctive Top-3 differences.</div>`;
  }
 
  if(view==='heat'){
  Plotly.newPlot('viz',[{type:'heatmap',z:d.heat,y:(isMobile()?MOBILE_CATS:CATS),x:RANKS,hovertemplate:'%{x}<br>%{y}<br>%{z}% of respondents<extra></extra>',
  colorscale:[[0,'#08243c'],[0.5,'#14aae2'],[1,'#c7d54f']]}],
  {xaxis:{side:'top',tickangle:-35},yaxis:{autorange:'reversed'},paper_bgcolor:'rgba(0,0,0,0)',plot_bgcolor:'rgba(0,0,0,0)',font:{color:'white'},margin:{l:isMobile()?120:320,r:20,t:isMobile()?70:90,b:40}},{responsive:true});
- } else if(view==='bar') {
- Plotly.newPlot('viz',[{type:'bar',orientation:'h',y:d.top_ranked.slice(0,10).map(x=>x[0]).reverse(),x:d.top_ranked.slice(0,10).map(x=>x[1]).reverse(),
- marker:{color:'#14aae2'},hovertemplate:'%{x}% of respondents placed this value in ranks 1-3<extra></extra>'}],
- {xaxis:{title:'% of respondents placing value in Top 3'},paper_bgcolor:'rgba(0,0,0,0)',plot_bgcolor:'rgba(0,0,0,0)',font:{color:'white'},margin:{l:isMobile()?120:320,r:20,t:30,b:isMobile()?60:100}},{responsive:true});
- } else if(view==='bottom') {
- Plotly.newPlot('viz',[{type:'bar',orientation:'h',y:d.bottom_ranked.slice(0,10).map(x=>x[0]).reverse(),x:d.bottom_ranked.slice(0,10).map(x=>x[1]).reverse(),
- marker:{color:'#c7d54f'},hovertemplate:'%{x}% of respondents placed this value in ranks 8-10<extra></extra>'}],
- {xaxis:{title:'% of respondents placing value in Bottom 3'},paper_bgcolor:'rgba(0,0,0,0)',plot_bgcolor:'rgba(0,0,0,0)',font:{color:'white'},margin:{l:isMobile()?120:320,r:20,t:30,b:isMobile()?60:100}},{responsive:true});
- 
  } else if(view==='agerank') {
    Plotly.purge('viz');
    const ages=['Under 18','18-24','25-34','35-44','45-54','55-64','65-74'];
