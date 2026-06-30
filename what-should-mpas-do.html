@@ -390,6 +390,79 @@ body{padding-bottom:420px;}
 }
 </style>
 
+
+<style id="mobile-long-basin-title-fix">
+@media (max-width: 760px){
+  body{
+    --mobile-header-space: 168px;
+  }
+
+  #seaBasinTitle{
+    position: absolute !important;
+    top: 62px !important;
+    left: 50% !important;
+    transform: translateX(-50%) !important;
+    width: calc(100vw - 36px) !important;
+    max-width: 560px !important;
+    margin: 0 !important;
+    padding: 0 82px !important;
+    box-sizing: border-box !important;
+    font-size: clamp(22px, 6.2vw, 34px) !important;
+    line-height: 0.94 !important;
+    letter-spacing: 0.5px !important;
+    text-align: center !important;
+    word-break: normal !important;
+    overflow-wrap: normal !important;
+    hyphens: none !important;
+    z-index: 120 !important;
+  }
+
+  #panel{
+    margin-top: var(--mobile-header-space) !important;
+  }
+
+  #title{
+    padding: 0 10px !important;
+    font-size: clamp(24px, 7vw, 32px) !important;
+    line-height: 1.08 !important;
+  }
+}
+
+@media (max-width: 420px){
+  body{
+    --mobile-header-space: 172px;
+  }
+
+  #seaBasinTitle{
+    top: 58px !important;
+    width: calc(100vw - 18px) !important;
+    padding: 0 64px !important;
+    font-size: clamp(18px, 5.8vw, 28px) !important;
+    line-height: 0.95 !important;
+    letter-spacing: 0.2px !important;
+  }
+
+  #panel{
+    margin-top: var(--mobile-header-space) !important;
+  }
+
+  #title{
+    font-size: clamp(22px, 6.8vw, 29px) !important;
+  }
+}
+
+@media (max-width: 360px){
+  body{
+    --mobile-header-space: 176px;
+  }
+
+  #seaBasinTitle{
+    padding: 0 58px !important;
+    font-size: clamp(17px, 5.4vw, 25px) !important;
+  }
+}
+</style>
+
 </head>
 <body translate="no"><div id="selectedWordDock" style="display:none;"></div>
 
