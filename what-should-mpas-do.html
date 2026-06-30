@@ -3301,20 +3301,20 @@ window.addEventListener('load', ()=>{
     if(!el) return;
 
     var raw = (el.textContent || "").replace(/\s+/g, " ").trim().toUpperCase();
-    var isEast = raw === "EAST MEDITERRANEAN SEA";
-    var isWest = raw === "WEST MEDITERRANEAN SEA";
+    var isEast = raw === "EAST MED";
+    var isWest = raw === "WEST MED";
 
     el.classList.toggle("mobile-med-title", isEast || isWest);
     document.body.classList.toggle("mobile-med-active", isEast || isWest);
 
     if(window.innerWidth <= 760 && isEast){
-      el.innerHTML = "EAST<br>MEDITERRANEAN<br>SEA";
+      el.innerHTML = "EAST<br>MED";
     } else if(window.innerWidth <= 760 && isWest){
-      el.innerHTML = "WEST<br>MEDITERRANEAN<br>SEA";
+      el.innerHTML = "WEST<br>MED";
     } else if(isEast){
-      el.textContent = "EAST MEDITERRANEAN SEA";
+      el.textContent = "EAST MED";
     } else if(isWest){
-      el.textContent = "WEST MEDITERRANEAN SEA";
+      el.textContent = "WEST MED";
     }
   }
 
