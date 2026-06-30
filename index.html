@@ -230,6 +230,197 @@ z-index:5;
 }
 
 </style>
+
+<style id="responsive-laptop-index-fix">
+/* Compact laptop / shallow landscape screens */
+@media (max-width: 900px) and (orientation: landscape),
+       (max-height: 760px) and (min-width: 650px){
+  html,body{
+    height:100%;
+    overflow:hidden !important;
+  }
+
+  .hero{
+    height:100vh !important;
+    min-height:0 !important;
+    overflow:hidden !important;
+  }
+
+  .logoContainer{
+    position:absolute !important;
+    top:18px !important;
+    left:50% !important;
+    transform:translateX(-50%) !important;
+    width:min(620px,58vw) !important;
+    height:auto !important;
+    margin:0 !important;
+    z-index:5 !important;
+  }
+
+  .logo{
+    position:relative !important;
+    top:auto !important;
+    left:auto !important;
+    transform:none !important;
+    width:100% !important;
+  }
+
+  .stat{
+    position:absolute !important;
+    top:52vh !important;
+    left:50% !important;
+    transform:translateX(-50%) !important;
+    width:92vw !important;
+    margin:0 !important;
+    text-align:center !important;
+    font-size:clamp(17px,2.4vw,23px) !important;
+    line-height:1.2 !important;
+    z-index:6 !important;
+  }
+
+  .cards{
+    position:absolute !important;
+    left:50% !important;
+    bottom:18px !important;
+    transform:translateX(-50%) !important;
+    width:96vw !important;
+    display:flex !important;
+    flex-direction:row !important;
+    flex-wrap:nowrap !important;
+    gap:12px !important;
+    justify-content:center !important;
+    align-items:stretch !important;
+    margin:0 !important;
+    z-index:7 !important;
+  }
+
+  .cardLink{
+    flex:1 1 0 !important;
+    max-width:230px !important;
+    min-width:0 !important;
+    width:auto !important;
+  }
+
+  .card{
+    width:100% !important;
+    max-width:none !important;
+    height:100% !important;
+    padding:14px 12px !important;
+    border-radius:18px !important;
+    box-sizing:border-box !important;
+  }
+
+  .card h3{
+    font-size:clamp(18px,2.7vw,25px) !important;
+    line-height:1.05 !important;
+    margin-bottom:8px !important;
+  }
+
+  .card p{
+    font-size:clamp(12px,1.65vw,14px) !important;
+    line-height:1.25 !important;
+    margin:0 !important;
+  }
+}
+
+/* Normal tablet/mobile portrait layout */
+@media (max-width: 900px) and (orientation: portrait){
+  html,body{
+    overflow:auto !important;
+    height:auto !important;
+  }
+
+  .hero{
+    min-height:100vh !important;
+    height:auto !important;
+    overflow:hidden !important;
+    padding-bottom:28px !important;
+  }
+
+  .logoContainer{
+    position:relative !important;
+    top:auto !important;
+    left:auto !important;
+    transform:none !important;
+    width:92vw !important;
+    max-width:620px !important;
+    height:auto !important;
+    margin:20px auto 0 !important;
+  }
+
+  .logo{
+    position:relative !important;
+    width:100% !important;
+    top:auto !important;
+    left:auto !important;
+    transform:none !important;
+  }
+
+  .stat{
+    position:relative !important;
+    top:auto !important;
+    left:auto !important;
+    transform:none !important;
+    width:90vw !important;
+    margin:10px auto 18px !important;
+    text-align:center !important;
+    font-size:clamp(18px,5vw,24px) !important;
+  }
+
+  .cards{
+    position:relative !important;
+    left:auto !important;
+    bottom:auto !important;
+    transform:none !important;
+    width:92vw !important;
+    margin:12px auto 36px !important;
+    display:flex !important;
+    flex-direction:column !important;
+    gap:14px !important;
+    align-items:center !important;
+  }
+
+  .cardLink{
+    width:100% !important;
+    max-width:430px !important;
+  }
+
+  .card{
+    width:100% !important;
+    max-width:none !important;
+    box-sizing:border-box !important;
+  }
+}
+
+/* Very small phones */
+@media (max-width: 420px){
+  .logoContainer{
+    width:96vw !important;
+    margin-top:14px !important;
+  }
+
+  .stat{
+    font-size:17px !important;
+    margin-bottom:14px !important;
+  }
+
+  .card{
+    padding:17px !important;
+    border-radius:20px !important;
+  }
+
+  .card h3{
+    font-size:23px !important;
+    line-height:1.08 !important;
+  }
+
+  .card p{
+    font-size:14px !important;
+    line-height:1.35 !important;
+  }
+}
+</style>
+
 </head>
 <body>
 
@@ -256,18 +447,21 @@ z-index:5;
 <h3>Who Responded?</h3>
 <p>Explore responses across Europe, demographics and sea-basin participation.</p>
 </div>
+</a>
 
 <a href="values_sea.html" class="cardLink">
 <div class="card">
 <h3>What Do People Value?</h3>
 <p>Discover what people value most about Europe's seas.</p>
 </div>
+</a>
 
 <a href="what-should-mpas-do.html" class="cardLink">
 <div class="card">
 <h3>What Should MPAs Do?</h3>
 <p>Explore the interactive word cloud and sea-basin insights.</p>
 </div>
+</a>
 </div>
 </div>
 
