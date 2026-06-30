@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en" translate="no">
 <head>
@@ -337,6 +336,17 @@ body{padding-bottom:420px;}
   }
 }
 </style>
+
+<style id="font-update">
+.word{
+  font-family:"Early Man","Impact","Arial Black",sans-serif !important;
+}
+.quote,
+.animatedQuote{
+  font-family:"Berlin Sans FB","Trebuchet MS",Arial,sans-serif !important;
+}
+</style>
+
 </head>
 <body translate="no"><div id="selectedWordDock" style="display:none;"></div>
 
@@ -2436,6 +2446,381 @@ window.addEventListener('load', ()=>{
 })();
 </script>
 
+
+
+<!-- V5 robust responsive word rendering: words are HTML, canvas is background only -->
+<style id="v5_robust_responsive_html_words">
+  #htmlWordLayer{
+    position:absolute;
+    left:5vw;
+    top:145px;
+    width:58vw;
+    bottom:95px;
+    z-index:70;
+    display:flex;
+    flex-wrap:wrap;
+    align-content:center;
+    justify-content:center;
+    gap:18px 30px;
+    pointer-events:auto;
+    box-sizing:border-box;
+    padding:10px 12px;
+  }
+
+  .html-word{
+    appearance:none;
+    border:0;
+    background:transparent;
+    color:#ffffff;
+    font-family:Arial,sans-serif;
+    font-weight:900;
+    line-height:1;
+    padding:8px 10px;
+    margin:0;
+    cursor:pointer;
+    text-shadow:0 0 18px rgba(255,255,255,.40);
+    white-space:nowrap;
+    font-size:var(--word-size,26px);
+  }
+
+  .html-word.active{
+    color:#ffe082;
+    text-shadow:0 0 20px rgba(255,224,130,.75);
+  }
+
+  @media (min-width:769px){
+    #panel{
+      right:24px !important;
+      left:auto !important;
+      top:50% !important;
+      transform:translateY(-50%) !important;
+      width:31vw !important;
+      min-width:320px !important;
+      max-width:500px !important;
+      max-height:42vh !important;
+      overflow:auto !important;
+      box-sizing:border-box !important;
+    }
+
+    #basinSelector{
+      right:32px !important;
+      bottom:24px !important;
+      left:auto !important;
+      top:auto !important;
+      max-width:31vw !important;
+      box-sizing:border-box !important;
+    }
+
+    #basinSelector button{
+      font-size:14px !important;
+      padding:7px 12px !important;
+      margin:3px !important;
+      max-width:100% !important;
+    }
+  }
+
+  /* Compact landscape laptop: the exact case that was failing */
+  @media (min-width:769px) and (max-height:850px){
+    #seaBasinTitle{font-size:48px !important; top:22px !important;}
+    #mpaLogo{width:64px !important; top:26px !important; right:34px !important;}
+    .back-btn{top:24px !important; left:26px !important; padding:9px 16px !important; font-size:17px !important;}
+
+    #htmlWordLayer{
+      left:4.5vw !important;
+      top:150px !important;
+      width:58vw !important;
+      bottom:105px !important;
+      gap:16px 26px !important;
+      align-content:center !important;
+    }
+
+    #panel{
+      top:205px !important;
+      transform:none !important;
+      right:28px !important;
+      width:32vw !important;
+      min-width:300px !important;
+      max-height:245px !important;
+      padding:18px !important;
+    }
+
+    #title{font-size:34px !important; line-height:1.12 !important; margin-bottom:12px !important;}
+    #count{font-size:17px !important; margin-bottom:10px !important;}
+    #quotes{min-height:70px !important;}
+    .quote{font-size:15px !important; line-height:1.35 !important;}
+
+    #basinSelector{
+      right:28px !important;
+      bottom:22px !important;
+      top:auto !important;
+      width:32vw !important;
+      max-width:32vw !important;
+      padding:8px !important;
+      display:flex !important;
+      flex-wrap:wrap !important;
+      justify-content:center !important;
+      gap:4px !important;
+      border-radius:14px !important;
+    }
+
+    #basinSelector br{display:none !important;}
+    #basinSelector button{font-size:12px !important; padding:6px 9px !important; margin:0 !important;}
+  }
+
+  /* True mobile: one clean column of terms below the quote panel */
+  @media (max-width:768px){
+    html,body{
+      overflow:auto !important;
+      min-height:100vh !important;
+    }
+
+    #seaBasinTitle{font-size:30px !important; top:12px !important; width:calc(100vw - 150px) !important;}
+    .back-btn{top:14px !important; left:12px !important; padding:8px 13px !important; font-size:15px !important;}
+    #mpaLogo{width:50px !important; top:12px !important; right:12px !important;}
+
+    #panel{
+      position:absolute !important;
+      top:72px !important;
+      left:50% !important;
+      right:auto !important;
+      transform:translateX(-50%) !important;
+      width:min(92vw,620px) !important;
+      min-width:0 !important;
+      max-width:620px !important;
+      max-height:none !important;
+      overflow:visible !important;
+      padding:15px !important;
+      box-sizing:border-box !important;
+      z-index:80 !important;
+    }
+
+    #title{font-size:27px !important; line-height:1.12 !important; margin-bottom:10px !important;}
+    #count{font-size:16px !important; margin-bottom:8px !important;}
+    #quotes{min-height:64px !important;}
+    .quote{font-size:14px !important; line-height:1.35 !important;}
+
+    #htmlWordLayer{
+      position:absolute !important;
+      left:50% !important;
+      transform:translateX(-50%) !important;
+      top:var(--mobile-word-top,330px) !important;
+      width:92vw !important;
+      bottom:auto !important;
+      display:flex !important;
+      flex-direction:column !important;
+      flex-wrap:nowrap !important;
+      align-items:center !important;
+      justify-content:flex-start !important;
+      align-content:center !important;
+      gap:9px !important;
+      padding:0 0 125px 0 !important;
+      box-sizing:border-box !important;
+      z-index:75 !important;
+    }
+
+    .html-word{
+      display:block !important;
+      width:100% !important;
+      max-width:360px !important;
+      text-align:center !important;
+      font-size:var(--mobile-word-size,20px) !important;
+      padding:8px 10px !important;
+      border-radius:999px !important;
+      background:rgba(255,255,255,.07) !important;
+    }
+
+    #basinSelector{
+      position:fixed !important;
+      left:0 !important;
+      right:0 !important;
+      bottom:0 !important;
+      top:auto !important;
+      width:100% !important;
+      max-width:none !important;
+      margin:0 !important;
+      z-index:9999 !important;
+      background:rgba(8,59,92,.96) !important;
+      border-radius:0 !important;
+      padding:10px !important;
+      box-sizing:border-box !important;
+      white-space:nowrap !important;
+      overflow-x:auto !important;
+      overflow-y:hidden !important;
+    }
+
+    #basinSelector br{display:none !important;}
+    #basinSelector button{
+      display:inline-flex !important;
+      white-space:nowrap !important;
+      font-size:12px !important;
+      padding:6px 10px !important;
+      margin:2px !important;
+    }
+  }
+</style>
+
+<script id="v5_robust_responsive_html_words">
+(function(){
+  let selectedWord = null;
+
+  function ensureLayer(){
+    let layer=document.getElementById('htmlWordLayer');
+    if(!layer){
+      layer=document.createElement('div');
+      layer.id='htmlWordLayer';
+      const canvas=document.getElementById('c');
+      if(canvas && canvas.parentNode){
+        canvas.parentNode.insertBefore(layer, canvas.nextSibling);
+      }else{
+        document.body.appendChild(layer);
+      }
+    }
+    return layer;
+  }
+
+  function rankedWords(){
+    if(typeof words==='undefined') return [];
+    return words.slice().sort((a,b)=>(b.count||0)-(a.count||0));
+  }
+
+  function getSize(w){
+    const list=rankedWords();
+    const counts=list.map(x=>x.count||0);
+    const min=Math.min.apply(null, counts.length?counts:[0]);
+    const max=Math.max.apply(null, counts.length?counts:[1]);
+    const scale=((w.count||0)-min)/Math.max(1,max-min);
+    const mobile=window.innerWidth<=768;
+    const compact=window.innerHeight<=850 && window.innerWidth>768;
+
+    if(mobile){
+      return Math.round(15 + scale*13); // one-column mobile list
+    }
+    if(compact){
+      return Math.round(18 + scale*26); // laptop landscape, no crowding
+    }
+    return Math.round(22 + scale*42); // full desktop/monitor
+  }
+
+  function selectWord(text){
+    selectedWord=text;
+    if(typeof words!=='undefined'){
+      words.forEach(w=>w.selected=((w.text||'')===text));
+    }
+    const match=(typeof words!=='undefined') ? words.find(w=>(w.text||'')===text) : null;
+    const selected=document.getElementById('selected');
+    const count=document.getElementById('count');
+    if(selected) selected.innerText=text;
+    if(count && match) count.innerText=(match.count||0)+' mentions';
+    if(typeof renderQuotes==='function') renderQuotes(text);
+    updateActiveButtons();
+  }
+
+  function updateActiveButtons(){
+    document.querySelectorAll('.html-word').forEach(btn=>{
+      btn.classList.toggle('active', btn.dataset.word===selectedWord);
+    });
+  }
+
+  function suppressCanvasWords(){
+    if(typeof words==='undefined') return;
+    words.forEach(w=>{
+      if(w._realSize===undefined || w._realSize<1) w._realSize=getSize(w);
+      w.size=0.01;
+      w.homeX=-9999;
+      w.homeY=-9999;
+      w.x=-9999;
+      w.y=-9999;
+    });
+  }
+
+  function renderHtmlWords(){
+    const layer=ensureLayer();
+    const list=rankedWords();
+    layer.innerHTML='';
+
+    list.forEach(w=>{
+      const btn=document.createElement('button');
+      btn.type='button';
+      btn.className='html-word';
+      btn.dataset.word=w.text;
+      btn.textContent=w.text;
+      const size=getSize(w);
+      btn.style.setProperty('--word-size', size+'px');
+      btn.style.setProperty('--mobile-word-size', Math.min(size,28)+'px');
+      btn.addEventListener('click', function(ev){
+        ev.preventDefault();
+        ev.stopPropagation();
+        selectWord(w.text);
+      });
+      layer.appendChild(btn);
+    });
+
+    suppressCanvasWords();
+    updateActiveButtons();
+    updateMobileHeight();
+  }
+
+  function updateMobileHeight(){
+    if(window.innerWidth>768){
+      document.body.style.minHeight='';
+      const canvas=document.getElementById('c');
+      if(canvas){ canvas.style.height=window.innerHeight+'px'; }
+      return;
+    }
+
+    const panel=document.getElementById('panel');
+    const layer=ensureLayer();
+    const panelBottom=panel ? (panel.offsetTop + panel.offsetHeight) : 300;
+    const top=panelBottom + 28;
+    document.documentElement.style.setProperty('--mobile-word-top', top+'px');
+    const h=Math.max(window.innerHeight, top + layer.scrollHeight + 135);
+    document.body.style.minHeight=h+'px';
+    const canvas=document.getElementById('c');
+    if(canvas){
+      canvas.height=h;
+      canvas.style.height=h+'px';
+    }
+  }
+
+  const oldBuild=window.buildWordCloud || (typeof buildWordCloud!=='undefined' ? buildWordCloud : null);
+  if(oldBuild){
+    window.buildWordCloud=function(ds){
+      oldBuild(ds);
+      selectedWord=null;
+      setTimeout(renderHtmlWords,0);
+      setTimeout(renderHtmlWords,80);
+    };
+    try{ buildWordCloud=window.buildWordCloud; }catch(e){}
+  }
+
+  const oldSwitch=window.switchDataset || (typeof switchDataset!=='undefined' ? switchDataset : null);
+  if(oldSwitch){
+    window.switchDataset=function(name){
+      oldSwitch(name);
+      selectedWord=null;
+      setTimeout(renderHtmlWords,0);
+      setTimeout(renderHtmlWords,100);
+    };
+    try{ switchDataset=window.switchDataset; }catch(e){}
+  }
+
+  const oldApply=window.applyFixedCloudLayout;
+  window.applyFixedCloudLayout=function(){
+    if(oldApply) oldApply();
+    suppressCanvasWords();
+    updateMobileHeight();
+  };
+
+  window.addEventListener('resize', function(){
+    setTimeout(renderHtmlWords,80);
+  });
+  window.addEventListener('load', function(){
+    setTimeout(renderHtmlWords,120);
+    setTimeout(renderHtmlWords,450);
+  });
+  setTimeout(renderHtmlWords,200);
+})();
+</script>
 </body>
 
 </html>
