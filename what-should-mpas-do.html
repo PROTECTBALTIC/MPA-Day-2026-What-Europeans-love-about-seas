@@ -717,6 +717,31 @@ body{padding-bottom:420px;}
 }
 </style>
 
+
+<style id="mobile-title-position-v6">
+@media (max-width:760px) and (orientation:portrait){
+  #seaBasinTitle,
+  #seaBasinTitle.mobile-med-title{
+    top:102px !important; /* 20px lower */
+    left:50% !important;
+    right:auto !important;
+    transform:translateX(-50%) !important;
+    width:100% !important;
+    text-align:center !important;
+    margin:0 auto !important;
+    display:block !important;
+  }
+
+  #panel{
+    margin-top:222px !important;
+  }
+
+  body.mobile-med-active #panel{
+    margin-top:264px !important;
+  }
+}
+</style>
+
 </head>
 <body translate="no"><div id="selectedWordDock" style="display:none;"></div>
 
