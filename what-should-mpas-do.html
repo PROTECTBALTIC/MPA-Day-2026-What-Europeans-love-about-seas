@@ -174,7 +174,7 @@ text-shadow:0 0 15px rgba(255,255,255,.25);
 }
 
 
-@media (max-width:768px){
+@media (max-width:900px){
 html,body{
   overflow:auto;
 }
@@ -221,7 +221,7 @@ body{padding-bottom:420px;}
 }
 
 
-@media (max-width:768px){
+@media (max-width:900px){
   #basinSelector{
     position:fixed !important;
     left:0 !important;
@@ -252,7 +252,7 @@ body{padding-bottom:420px;}
 }
 
 
-@media (max-width:768px){
+@media (max-width:900px){
   .word{
     font-size: clamp(12px, 1.8vw, 18px) !important;
   }
@@ -304,7 +304,7 @@ body{padding-bottom:420px;}
 
 
 <style id="v17_mobile_panel_stack_fix">
-@media (max-width:768px){
+@media (max-width:900px){
   html,body{
     overflow:auto !important;
     min-height:100vh;
@@ -436,7 +436,7 @@ const minCount=Math.min(...counts);
 const maxCount=Math.max(...counts);
 const scale=(w[1]-minCount)/Math.max(1,(maxCount-minCount));
 
-if (window.innerWidth <= 768) {
+if (window.innerWidth <= 900) {
     let mobileSize = 10 + scale * (18 - 10);
 
     if (w[0].toLowerCase() === "protect") mobileSize = Math.min(mobileSize, 14);
@@ -633,7 +633,7 @@ quoteInterval = setInterval(showQuote, 4800);
 
 function applyFixedCloudLayout(){
 
-if(window.innerWidth < 768){
+if(window.innerWidth < 900){
 
 const cloudPositions=[
 [0.00,-0.02],[-0.14,-0.20],[0.14,-0.20],[-0.28,-0.04],[0.28,-0.04],
